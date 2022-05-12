@@ -1,6 +1,8 @@
+use colored::*;
 use rand::Rng;
 use std::cmp::Ordering;
 use std::io;
+
 // CREDITS: https://youtu.be/H0xBSbnQYds => Let's Get Rusty
 
 // It's generating a random number between 1 and 100 and then it's comparing the user input to the random number.
@@ -40,12 +42,13 @@ fn main() {
 
         /* now create a match expression as err-> mismatched type*/
         match guess.cmp(&secret_number) {
-            Ordering::Less => println!("You guessed lower than: {}", secret_number),
-            Ordering::Greater => println!("You guessed higher than: {}", secret_number),
+            Ordering::Less => println!("{}", "You guessed low".red()),
+            Ordering::Greater => println!("{}", "You guessed high".red()),
             Ordering::Equal => {
-                println!("You win! : {}", secret_number);
-                println!("You guessed the number in {} tries", count);
-                println!("Thanks for playing!");
+                println!("{}", "You win!".green());
+                println!("You guessed {} times", count.to_string().yellow());
+                println!("{}", "Thanks for playing!".blue());
+
                 // It's breaking the loop.
                 break;
             }
@@ -66,3 +69,7 @@ fn main() {
 /* thread 'main' panicked at 'Please type a number: invalid digit found in string', apps/guessing-game/src/main.rs:34:31
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace */
 // Err(error) => panic!("Please type a number: {}", error), replaced to =>  Err(_) => continue, where _ is a catch all error value
+// NOW ADD COLOR to the output with dependencies
+// [dependencies]
+// rand = "0.8.4"
+// colored = "2.0.0"
