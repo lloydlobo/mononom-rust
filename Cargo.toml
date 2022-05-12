@@ -1,7 +1,8 @@
 [workspace]
 members = [
+    "apps/guessing-game",
     "apps/hello-world",
     "libs/rust-lib",
     "apps/rust-app",
-    "apps/hello-cargo"
+    "apps/hello-cargo",
 ]

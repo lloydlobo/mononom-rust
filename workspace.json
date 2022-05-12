@@ -2,9 +2,10 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "guessing_game": "apps/guessing-game",
+    "hello-cargo": "apps/hello-cargo",
     "hello_world": "apps/hello-world",
     "rust_app": "apps/rust-app",
-    "hello-cargo": "apps/hello-cargo",
     "rust_lib": "libs/rust-lib"
   }
 }

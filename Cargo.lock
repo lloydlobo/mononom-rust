@@ -20,6 +20,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "guessing_game"
+version = "0.1.0"
+
+[[package]]
 name = "hello-cargo"
 version = "0.1.0"
 
