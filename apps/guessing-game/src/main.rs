@@ -14,7 +14,7 @@ fn main() {
     println!("The secret number is: {}", secret_number);
 
     //  Add a loop
-    let mut count = 0;
+    let mut count: i32 = 0;
     loop {
         println!("Please input your guess.");
         // Creating a mutable variable called guess and assigning it the value of a new empty string.
@@ -27,11 +27,13 @@ fn main() {
 
         // It's a match expression that is checking if the user input is a valid number.
         // Trims white spaces, and Parses the input guess string to a number
+        // SHADOWING from (String to u32) || converting types while preserving same name
         let guess: u32 = {
             let this = guess.trim().parse();
             match this {
-                Ok(guess) => guess,
-                Err(error) => panic!("Please type a number: {}", error),
+                Ok(num) => num,
+                // _ is a catch all value
+                Err(_) => continue,
             }
         };
         println!("You guessed: {}", guess);
@@ -59,3 +61,8 @@ fn main() {
 //  Create a match expression that is checking if the user input is a valid number => Trims white spaces, and Parses the input guess string to a number
 // Loop:: Now we want the user to keep guessing if they get it wrong. and add everything in the loop.
 // It never ends -> modify the Equal ordering to break the loop.
+// add tries with variable count
+// Address invalid inputs like strings (characters, letters, symbols, etc)
+/* thread 'main' panicked at 'Please type a number: invalid digit found in string', apps/guessing-game/src/main.rs:34:31
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace */
+// Err(error) => panic!("Please type a number: {}", error), replaced to =>  Err(_) => continue, where _ is a catch all error value
