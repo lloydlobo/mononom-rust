@@ -14,6 +14,7 @@ fn main() {
     println!("The secret number is: {}", secret_number);
 
     //  Add a loop
+    let mut count = 0;
     loop {
         println!("Please input your guess.");
         // Creating a mutable variable called guess and assigning it the value of a new empty string.
@@ -41,10 +42,14 @@ fn main() {
             Ordering::Greater => println!("You guessed higher than: {}", secret_number),
             Ordering::Equal => {
                 println!("You win! : {}", secret_number);
+                println!("You guessed the number in {} tries", count);
+                println!("Thanks for playing!");
                 // It's breaking the loop.
                 break;
             }
         }
+        // It's adding 1 to the count variable.
+        count += 1;
     }
 }
 
