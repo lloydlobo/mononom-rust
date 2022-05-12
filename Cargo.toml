@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "apps/hello-world",
+    "libs/rust-lib",
+    "apps/rust-app",
+    "apps/hello-cargo"
+]

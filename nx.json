@@ -29,5 +29,6 @@
         "projects": "dependencies"
       }
     ]
-  }
+  },
+  "plugins": ["@nxrs/cargo"]
 }
