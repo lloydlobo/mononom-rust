@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "libs/tdd/adder",
     "apps/guessing-game",
     "apps/hello-world",
     "libs/rust-lib",

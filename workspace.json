@@ -2,6 +2,7 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "adder": "libs/tdd/adder",
     "guessing_game": "apps/guessing-game",
     "hello-cargo": "apps/hello-cargo",
     "hello_world": "apps/hello-world",
