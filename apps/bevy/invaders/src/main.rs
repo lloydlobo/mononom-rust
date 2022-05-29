@@ -7,24 +7,34 @@ mod components;
 mod player;
 
 // region: --- Asset Constants
+
 const PLAYER_SPRITE: &str = "player_a_01.png"; // Rust mascot
 const PLAYER_SIZE: (f32, f32) = (144.0, 75.0); // now-> setup an asset_server
+const PLAYER_LASER_SPRITE: &str = "laser_a_01.png";
+const PLAYER_LASER_SIZE: (f32, f32) = (9.0, 54.0);
+
 const SPRITE_SCALE: f32 = 0.5;
+
 // endregion: --- Asset Constants
 
 // region: --- Game Constants
+
 const TIME_STEP: f32 = 1.0 / 60.0;
 const BASE_SPEED: f32 = 500.0;
+
 // endregion: --- Game Constants
 
 // region: --- Resources
+
 pub struct WinSize {
     pub w: f32,
     pub h: f32,
 }
 struct GameTextures {
     player: Handle<Image>,
+    player_laser: Handle<Image>,
 }
+
 // endregion: --- Resources
 
 fn main() {
@@ -76,6 +86,7 @@ fn setup_system(
     // add GameTextures resource
     let game_textures = GameTextures {
         player: asset_server.load(PLAYER_SPRITE),
+        player_laser: asset_server.load(PLAYER_LASER_SPRITE),
     };
     commands.insert_resource(game_textures); // it's done only one time
 }
