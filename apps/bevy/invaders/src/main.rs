@@ -6,6 +6,7 @@ use bevy::prelude::*;
 const PLAYER_SPRITE: &str = "player_a_01.png"; // Rust mascot
 const PLAYER_SIZE: (f32, f32) = (144.0, 75.0); // now-> setup an asset_server
 
+const SPRITE_SCALE: f32 = 0.5;
 // endregion: --- Asset Constants
 
 fn main() {
@@ -51,6 +52,7 @@ fn setup_system(
         texture: asset_server.load(PLAYER_SPRITE),
         transform: Transform {
             translation: Vec3::new(0.0, bottom + PLAYER_SIZE.1 / 2.0 + 5.0, 10.0),
+            scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.0),
             ..Default::default()
         },
         ..Default::default()
