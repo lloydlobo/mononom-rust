@@ -30,9 +30,20 @@ fn main() {
 /// # Commands
 /// This system runs the following commands:
 /// - commands allow you to add / remove / modify entities
-fn setup_system(mut commands: Commands, asset_server: Res<AssetServer>) {
+fn setup_system(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    mut windows: ResMut<Windows>,
+) {
     // camera
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
+
+    // capture window size
+    let window = windows.get_primary_mut().unwrap();
+    let (window_width, window_height) = (window.width(), window.height());
+
+    // position window (for tutorial)
+    window.set_position(IVec2::new(600, 0));
 
     // add rectangle entity to the scene
     commands.spawn_bundle(SpriteBundle {
@@ -40,10 +51,6 @@ fn setup_system(mut commands: Commands, asset_server: Res<AssetServer>) {
         ..Default::default()
     });
 }
-
-/*
-ARCHIVE
-*/
 
 // region: --- ARCHIVE
 
@@ -55,7 +62,8 @@ ARCHIVE
 // },
 // endregion: --- Archive - 1. Setup rectangle mock
 
-// region: --- Archive - 2. Setup rectangle mock
-// endregion: --- Archive - 2. Setup rectangle mock
+// region: --- Archive - 2. Setup mutable window
+/* usually he prefers not to use unwrap */
+// endregion: --- Archive - 2. Setup mutable window
 
 // endregion: --- ARCHIVE
