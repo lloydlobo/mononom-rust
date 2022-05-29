@@ -2,6 +2,12 @@
 
 use bevy::prelude::*;
 
+// region: --- Asset Constants
+const PLAYER_SPRITE: &str = "player_a_01.png"; // Rust mascot
+const PLAYER_SIZE: (f32, f32) = (144.0, 75.0); // now-> setup an asset_server
+
+// endregion: --- Asset Constants
+
 fn main() {
     App::new()
         .insert_resource(ClearColor(Color::rgb(0.04, 0.04, 0.04)))
@@ -24,17 +30,32 @@ fn main() {
 /// # Commands
 /// This system runs the following commands:
 /// - commands allow you to add / remove / modify entities
-fn setup_system(mut commands: Commands) {
-    // camera - 2D game
+fn setup_system(mut commands: Commands, asset_server: Res<AssetServer>) {
+    // camera
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
 
     // add rectangle entity to the scene
     commands.spawn_bundle(SpriteBundle {
-        sprite: Sprite {
-            color: Color::rgb(0.25, 0.25, 0.75),
-            custom_size: Some(Vec2::new(150.0, 150.0)),
-            ..Default::default() // now add_startup_system(setup_system) called once in the beginning and then later on we add commands to be called every frame
-        },
+        texture: asset_server.load(PLAYER_SPRITE),
         ..Default::default()
     });
 }
+
+/*
+ARCHIVE
+*/
+
+// region: --- ARCHIVE
+
+// region: --- Archive - 1. Setup rectangle mock
+// sprite: Sprite {
+//     color: Color::rgb(0.25, 0.25, 0.75),
+//     custom_size: Some(Vec2::new(150.0, 150.0)),
+//     ..Default::default() // now add_startup_system(setup_system) called once in the beginning and then later on we add commands to be called every frame
+// },
+// endregion: --- Archive - 1. Setup rectangle mock
+
+// region: --- Archive - 2. Setup rectangle mock
+// endregion: --- Archive - 2. Setup rectangle mock
+
+// endregion: --- ARCHIVE
