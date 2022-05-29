@@ -11,16 +11,17 @@ const PLAYER_SPRITE: &str = "player_a_01.png"; // Rust mascot
 const PLAYER_SIZE: (f32, f32) = (144.0, 75.0); // now-> setup an asset_server
 const SPRITE_SCALE: f32 = 0.5;
 // endregion: --- Asset Constants
+
 // region: --- Game Constants
 const TIME_STEP: f32 = 1.0 / 60.0;
 const BASE_SPEED: f32 = 500.0;
 // endregion: --- Game Constants
+
 // region: --- Resources
 pub struct WinSize {
     pub w: f32,
     pub h: f32,
 }
-
 struct GameTextures {
     player: Handle<Image>,
 }
