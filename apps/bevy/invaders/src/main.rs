@@ -5,9 +5,15 @@ use bevy::prelude::*;
 // region: --- Asset Constants
 const PLAYER_SPRITE: &str = "player_a_01.png"; // Rust mascot
 const PLAYER_SIZE: (f32, f32) = (144.0, 75.0); // now-> setup an asset_server
-
 const SPRITE_SCALE: f32 = 0.5;
 // endregion: --- Asset Constants
+
+// region: --- Resources
+pub struct WinSize {
+    pub w: f32,
+    pub h: f32,
+}
+// endregion: --- Resources
 
 fn main() {
     App::new()
@@ -20,6 +26,7 @@ fn main() {
         })
         .add_plugins(DefaultPlugins)
         .add_startup_system(setup_system)
+        .add_startup_system_to_stage(StartupStage::PostStartup, player_spawn_system)
         .run();
 }
 
@@ -46,8 +53,20 @@ fn setup_system(
     // position window (for tutorial)
     window.set_position(IVec2::new(600, 0));
 
+    let window_size = WinSize {
+        w: window_width,
+        h: window_height,
+    };
+    commands.insert_resource(window_size);
+}
+
+fn player_spawn_system(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    window_size: Res<WinSize>,
+) {
     // add Player
-    let bottom = -window_height / 2.0; // now add transform
+    let bottom = -window_size.h / 2.0;
     commands.spawn_bundle(SpriteBundle {
         texture: asset_server.load(PLAYER_SPRITE),
         transform: Transform {
@@ -58,7 +77,6 @@ fn setup_system(
         ..Default::default()
     });
 }
-
 // region: --- ARCHIVE
 
 // region: --- Archive - 1. Setup rectangle mock
@@ -75,6 +93,25 @@ fn setup_system(
 
 // region: --- Archive - 3. Setup player bottom and transform
 // let bottom = -window_height / 2.0; // now add transform
-// endregion: --- Archive - 3. Setup player bottom and transform
+// endregion: --- Archive - 3. Setup player bottom and
+
+// region: --- Archive - 4. Setup player and scale
+// texture: asset_server.load(PLAYER_SPRITE); -> done previously
+// add in constants const SPRITE_SCALE: f32 = 0.5;
+// transform: Transform {
+// scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.0);
+// endregion: --- Archive - 4. Setup player and scale
+
+// region: --- Archive - 5. Resource structs for resources
+// THis is done to create another system for Player
+// pub struct WinSize
+// let window_size = WinSize { w: window_width, h: window_height };
+//  commands.insert_resource(window_size);
+// endregion: --- Archive - 5. Resource structs for resources
+
+// region: --- Archive - 6. Setup player spawn system
+// now add transform // after creating new system change to -window_size.h
+// now .add_startup_system_to_stage(StartupStage::PostStartup, player_spawn_system)     --> only after the setup
+// endregion: --- Archive - 6. Setup player spawn system
 
 // endregion: --- ARCHIVE
