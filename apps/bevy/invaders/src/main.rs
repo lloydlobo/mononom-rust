@@ -40,14 +40,19 @@ fn setup_system(
 
     // capture window size
     let window = windows.get_primary_mut().unwrap();
-    let (window_width, window_height) = (window.width(), window.height());
+    let (window_width, window_height) = (window.width(), window.height()); // now set bottom
 
     // position window (for tutorial)
     window.set_position(IVec2::new(600, 0));
 
-    // add rectangle entity to the scene
+    // add Player
+    let bottom = -window_height / 2.0; // now add transform
     commands.spawn_bundle(SpriteBundle {
         texture: asset_server.load(PLAYER_SPRITE),
+        transform: Transform {
+            translation: Vec3::new(0.0, bottom + PLAYER_SIZE.1 / 2.0 + 5.0, 10.0),
+            ..Default::default()
+        },
         ..Default::default()
     });
 }
@@ -65,5 +70,9 @@ fn setup_system(
 // region: --- Archive - 2. Setup mutable window
 /* usually he prefers not to use unwrap */
 // endregion: --- Archive - 2. Setup mutable window
+
+// region: --- Archive - 3. Setup player bottom and transform
+// let bottom = -window_height / 2.0; // now add transform
+// endregion: --- Archive - 3. Setup player bottom and transform
 
 // endregion: --- ARCHIVE
