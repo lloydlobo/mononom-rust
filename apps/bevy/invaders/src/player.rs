@@ -32,3 +32,11 @@ fn player_spawn_system(
         .insert(Player)
         .insert(Velocity { x: 1.0, y: 0.0 });
 }
+
+fn player_movement_system(mut query: Query<(&Velocity, &mut Transform), With<Player>>) {
+    for (velocity, mut transform) in query.iter_mut() {
+        let translation = &mut transform.translation;
+        translation.x += velocity.x;
+        translation.y += velocity.y;
+    }
+}
