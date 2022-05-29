@@ -1,7 +1,7 @@
 {
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "$schema": "..\\..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "projectType": "application",
-  "sourceRoot": "apps/hello-cargo/src",
+  "sourceRoot": "apps/bevy/invaders/src",
   "targets": {
     "build": {
       "executor": "@nxrs/cargo:build",
@@ -27,5 +27,5 @@
       }
     }
   },
-  "tags": []
+  "tags": ["bevy", "game", "ecs"]
 }
