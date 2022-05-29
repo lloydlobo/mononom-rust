@@ -1,3 +1,4 @@
+use crate::components::{Player, Velocity};
 use crate::{GameTextures, WinSize, PLAYER_SIZE, SPRITE_SCALE};
 use bevy::prelude::*;
 
@@ -17,14 +18,17 @@ fn player_spawn_system(
 ) {
     // add Player
     let bottom = -window_size.h / 2.0;
-    commands.spawn_bundle(SpriteBundle {
-        // texture: asset_server.load(PLAYER_SPRITE),
-        texture: game_textures.player.clone(),
-        transform: Transform {
-            translation: Vec3::new(0.0, bottom + PLAYER_SIZE.1 / 2.0 + 5.0, 10.0),
-            scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.0),
+    commands
+        .spawn_bundle(SpriteBundle {
+            // texture: asset_server.load(PLAYER_SPRITE),
+            texture: game_textures.player.clone(),
+            transform: Transform {
+                translation: Vec3::new(0.0, bottom + PLAYER_SIZE.1 / 2.0 + 5.0, 10.0),
+                scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.0),
+                ..Default::default()
+            },
             ..Default::default()
-        },
-        ..Default::default()
-    });
+        })
+        .insert(Player)
+        .insert(Velocity { x: 1.0, y: 0.0 });
 }
