@@ -13,6 +13,10 @@ pub struct WinSize {
     pub w: f32,
     pub h: f32,
 }
+
+struct GameTextures {
+    player: Handle<Image>,
+}
 // endregion: --- Resources
 
 fn main() {
@@ -53,22 +57,31 @@ fn setup_system(
     // position window (for tutorial)
     window.set_position(IVec2::new(600, 0));
 
+    // add WinSize resource
     let window_size = WinSize {
         w: window_width,
         h: window_height,
     };
     commands.insert_resource(window_size);
+
+    // add GameTextures resource
+    let game_textures = GameTextures {
+        player: asset_server.load(PLAYER_SPRITE),
+    };
+    commands.insert_resource(game_textures); // it's done only one time
 }
 
 fn player_spawn_system(
     mut commands: Commands,
-    asset_server: Res<AssetServer>,
+    // asset_server: Res<AssetServer>,
+    game_textures: Res<GameTextures>,
     window_size: Res<WinSize>,
 ) {
     // add Player
     let bottom = -window_size.h / 2.0;
     commands.spawn_bundle(SpriteBundle {
-        texture: asset_server.load(PLAYER_SPRITE),
+        // texture: asset_server.load(PLAYER_SPRITE),
+        texture: game_textures.player.clone(),
         transform: Transform {
             translation: Vec3::new(0.0, bottom + PLAYER_SIZE.1 / 2.0 + 5.0, 10.0),
             scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.0),
@@ -113,5 +126,12 @@ fn player_spawn_system(
 // now add transform // after creating new system change to -window_size.h
 // now .add_startup_system_to_stage(StartupStage::PostStartup, player_spawn_system)     --> only after the setup
 // endregion: --- Archive - 6. Setup player spawn system
+
+// region: --- Archive - 7. Add GameTextures resource
+// let game_textures = GameTextures {
+//     player: asset_server.load(PLAYER_SPRITE),
+// };
+// commands.insert_resource(game_textures); // it's done only one time
+// endregion: --- Archive - 7. Add GameTextures resource
 
 // endregion: --- ARCHIVE
