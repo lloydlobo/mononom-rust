@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "apps/bevy/invaders",
     "libs/tdd/adder",
     "apps/guessing-game",
     "apps/hello-world",
@@ -7,3 +8,4 @@ members = [
     "apps/rust-app",
     "apps/hello-cargo",
 ]
+resolver = "2" # "2" is the default resolver ! Important! wpu/Bevy needs this!
