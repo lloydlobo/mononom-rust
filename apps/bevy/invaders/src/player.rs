@@ -1,4 +1,4 @@
-use crate::components::{Player, Velocity};
+use crate::components::{Movable, Player, Velocity};
 use crate::{GameTextures, WinSize, BASE_SPEED, PLAYER_SIZE, SPRITE_SCALE, TIME_STEP};
 use bevy::prelude::*;
 use bevy::render::texture;
@@ -33,6 +33,9 @@ fn player_spawn_system(
             },
             ..Default::default()
         })
+        .insert(Movable {
+            auto_despawn: false,
+        })
         .insert(Player)
         .insert(Velocity { x: 0.0, y: 0.0 }); // make x = 0.0 from 1.0 as BaseSpeed increases speed
 }
@@ -47,15 +50,18 @@ fn player_fire_system(
         if kb.just_pressed(KeyCode::Space) {
             let (x, y) = (player_tf.translation.x, player_tf.translation.y);
 
-            commands.spawn_bundle(SpriteBundle {
-                texture: game_textures.player_laser.clone(),
-                transform: Transform {
-                    translation: Vec3::new(x, y, 0.0),
-                    scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.0),
+            commands
+                .spawn_bundle(SpriteBundle {
+                    texture: game_textures.player_laser.clone(),
+                    transform: Transform {
+                        translation: Vec3::new(x, y, 0.0),
+                        scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.0),
+                        ..Default::default()
+                    },
                     ..Default::default()
-                },
-                ..Default::default()
-            });
+                })
+                .insert(Movable { auto_despawn: true })
+                .insert(Velocity { x: 0.0, y: 1.0 }); // to go up put y: 1
         }
     }
 }
