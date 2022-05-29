@@ -1,6 +1,9 @@
 #![allow(unused)] // silence unused warnings while exploring the code (to comment out)
 
 use bevy::prelude::*;
+use player::PlayerPlugin;
+
+mod player;
 
 // region: --- Asset Constants
 const PLAYER_SPRITE: &str = "player_a_01.png"; // Rust mascot
@@ -29,8 +32,9 @@ fn main() {
             ..Default::default()
         })
         .add_plugins(DefaultPlugins)
+        .add_plugin(PlayerPlugin)
         .add_startup_system(setup_system)
-        .add_startup_system_to_stage(StartupStage::PostStartup, player_spawn_system)
+        // .add_startup_system_to_stage(StartupStage::PostStartup, player_spawn_system) // remove it after importing PlayerPlugin as it's already in the stage
         .run();
 }
 
@@ -71,25 +75,6 @@ fn setup_system(
     commands.insert_resource(game_textures); // it's done only one time
 }
 
-fn player_spawn_system(
-    mut commands: Commands,
-    // asset_server: Res<AssetServer>,
-    game_textures: Res<GameTextures>,
-    window_size: Res<WinSize>,
-) {
-    // add Player
-    let bottom = -window_size.h / 2.0;
-    commands.spawn_bundle(SpriteBundle {
-        // texture: asset_server.load(PLAYER_SPRITE),
-        texture: game_textures.player.clone(),
-        transform: Transform {
-            translation: Vec3::new(0.0, bottom + PLAYER_SIZE.1 / 2.0 + 5.0, 10.0),
-            scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.0),
-            ..Default::default()
-        },
-        ..Default::default()
-    });
-}
 // region: --- ARCHIVE
 
 // region: --- Archive - 1. Setup rectangle mock
@@ -132,6 +117,8 @@ fn player_spawn_system(
 //     player: asset_server.load(PLAYER_SPRITE),
 // };
 // commands.insert_resource(game_textures); // it's done only one time
+// texture: game_textures.player.clone(),
+// game_textures: Res<GameTextures>,
 // endregion: --- Archive - 7. Add GameTextures resource
 
 // endregion: --- ARCHIVE
