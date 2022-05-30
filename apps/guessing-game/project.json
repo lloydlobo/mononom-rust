@@ -25,6 +25,12 @@
         "failOnWarnings": true,
         "noDeps": true
       }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "preset": "angular"
+      }
     }
   },
   "tags": []
