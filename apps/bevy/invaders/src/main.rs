@@ -103,7 +103,6 @@ fn movable_system(
         translation.x += velocity.x * TIME_STEP * BASE_SPEED;
         translation.y += velocity.y * TIME_STEP * BASE_SPEED;
 
-        // check if movable (laser here) is out of screen
         if movable.auto_despawn {
             // despawn when out of screen
             const MARGIN: f32 = 200.0;
@@ -203,5 +202,13 @@ fn movable_system(
 // .add_system(movable_system)
 
 // endregion: --- Archive - 10. Add velocity, movable component & refactor player_movement_system to movable_system here
-
+// region: --- Archive - 11. Setup auto_despawn check if movable (laser here) is out of screen
+// if movable.auto_despawn {
+//     const MARGIN: f32 = 200.0;
+//     if translation.y > window_size.h / 2.0 + MARGIN
+//     || translation.y < -window_size.h / 2.0 - MARGIN {
+//         commands.entity(entity).despawn();
+//     }
+// }
+// endregion: --- Archive - 11. Setup auto_despawn check if movable (laser here) is out of screen
 // endregion: --- ARCHIVE

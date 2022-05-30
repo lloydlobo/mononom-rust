@@ -49,12 +49,14 @@ fn player_fire_system(
     if let Ok(player_tf) = query.get_single() {
         if kb.just_pressed(KeyCode::Space) {
             let (x, y) = (player_tf.translation.x, player_tf.translation.y);
+            // add two lasers instead of one with offset
+            let x_offset = PLAYER_SIZE.0 / 2.0 * SPRITE_SCALE - 5.0; // now add x_offset to x in translation:
 
             commands
                 .spawn_bundle(SpriteBundle {
                     texture: game_textures.player_laser.clone(),
                     transform: Transform {
-                        translation: Vec3::new(x, y, 0.0),
+                        translation: Vec3::new(x + x_offset, y + 15.0, 0.0),
                         scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.0),
                         ..Default::default()
                     },
