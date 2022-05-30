@@ -1,6 +1,7 @@
 #![allow(unused)] // silence unused warnings while exploring the code (to comment out)
 
 use bevy::prelude::*;
+use components::{Movable, Player, Velocity};
 use player::PlayerPlugin;
 
 mod components;
@@ -50,10 +51,11 @@ fn main() {
         .add_plugin(PlayerPlugin)
         .add_startup_system(setup_system)
         // .add_startup_system_to_stage(StartupStage::PostStartup, player_spawn_system) // remove it after importing PlayerPlugin as it's already in the stage
+        .add_system(movable_system)
         .run();
 }
 
-// first system - 'setup_system is a convention
+// first system - 'setup system is a convention
 /// # Setup
 /// This system is run once at the start of the game
 /// It sets up the game state
@@ -91,6 +93,17 @@ fn setup_system(
     commands.insert_resource(game_textures); // it's done only one time
 }
 
+fn movable_system(
+    mut commands: Commands,
+    window_size: Res<WinSize>,
+    mut query: Query<(Entity, &Velocity, &mut Transform, &Movable)>,
+) {
+    for (entity, velocity, mut transform, movable) in query.iter_mut() {
+        let translation = &mut transform.translation;
+        translation.x += velocity.x * TIME_STEP * BASE_SPEED;
+        translation.y += velocity.y * TIME_STEP * BASE_SPEED;
+    }
+}
 // region: --- ARCHIVE
 
 // region: --- Archive - 1. Setup rectangle mock

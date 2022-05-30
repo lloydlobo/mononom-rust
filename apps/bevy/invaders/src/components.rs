@@ -10,7 +10,7 @@ pub struct Velocity {
 #[derive(Component)]
 pub struct Movable {
     pub auto_despawn: bool,
-}
+} // player won't despawn when they go out of screen area
 
 // endregion --- Common Components
 
