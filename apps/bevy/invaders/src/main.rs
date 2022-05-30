@@ -211,4 +211,21 @@ fn movable_system(
 //     }
 // }
 // endregion: --- Archive - 11. Setup auto_despawn check if movable (laser here) is out of screen
+
+// region: --- Archive - 12. Setup player_fire_system --> add two lasers instead of one with offset
+
+// let x_offset = PLAYER_SIZE.0 / 2.0 * SPRITE_SCALE - 5.0; // now add x_offset to x in translation:
+// translation: Vec3::new(x + x_offset, y + 15.0, 0.0),
+
+// endregion: --- Archive - 12. Setup player_fire_system --> add two lasers instead of one with offset
+
+// region: --- Archive - 13. Setup player_fire_system --> add two lasers instead of one with offset
+
+// // add closure to spawn two lasers, |f32| -> ()
+// let mut spawn_laser = |x_offset: f32| { ... add the code within this closure to spawn_laser_system ...};
+// spawn_laser(x_offset);
+// spawn_laser(-x_offset);
+
+// endregion: --- Archive - 13. Setup player_fire_system --> add two lasers instead of one with offset
+
 // endregion: --- ARCHIVE
