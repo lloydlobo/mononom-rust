@@ -102,8 +102,23 @@ fn movable_system(
         let translation = &mut transform.translation;
         translation.x += velocity.x * TIME_STEP * BASE_SPEED;
         translation.y += velocity.y * TIME_STEP * BASE_SPEED;
+
+        // check if movable (laser here) is out of screen
+        if movable.auto_despawn {
+            // despawn when out of screen
+            const MARGIN: f32 = 200.0;
+            if translation.y > window_size.h / 2.0 + MARGIN
+                || translation.y < -window_size.h / 2.0 - MARGIN
+                || translation.x > window_size.w / 2.0 + MARGIN
+                || translation.x < -window_size.w / 2.0 - MARGIN
+            {
+                // println!("->> despawn {entity:?}");
+                commands.entity(entity).despawn();
+            }
+        }
     }
 }
+
 // region: --- ARCHIVE
 
 // region: --- Archive - 1. Setup rectangle mock
