@@ -8,6 +8,15 @@ const PLAYER_SIZE: (f32, f32) = (144., 75.);
 const SPRITE_SCALE: f32 = 0.5;
 // endregion:   --- Asset Constants
 
+// region:      --- Resources
+
+pub struct WinSize {
+    pub w: f32,
+    pub h: f32,
+}
+
+// endregion:   --- Resources
+
 fn main() {
     App::new()
         .insert_resource(ClearColor(Color::rgb(0.04, 0.04, 0.04)))
@@ -19,6 +28,7 @@ fn main() {
         })
         .add_plugins(DefaultPlugins)
         .add_startup_system(setup_system)
+        .add_startup_system_to_stage(StartupStage::PostStartup, player_spawn_system)
         .run();
 }
 
@@ -38,8 +48,17 @@ fn setup_system(
     // position window for now
     window.set_position(IVec2::new(800, 200));
 
+    let win_size = WinSize { w: win_w, h: win_h };
+    commands.insert_resource(win_size);
+}
+
+fn player_spawn_system(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    win_size: Res<WinSize>,
+) {
     // setup a player
-    let bottom = -win_h / 2.;
+    let bottom = -win_size.h / 2.;
     commands.spawn_bundle(SpriteBundle {
         texture: asset_server.load(PLAYER_SPRITE),
         transform: Transform {
@@ -50,6 +69,5 @@ fn setup_system(
         ..Default::default()
     });
 }
-
 // use For dev, fasterrecompile. (dynamic link bevy framework)
 // `cargo run --release --features bevy/dynamic`
