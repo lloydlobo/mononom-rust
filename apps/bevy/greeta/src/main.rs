@@ -1,11 +1,15 @@
+#![allow(unused)] // silence unused warnings while exploring (to comment out)
+
 use bevy::prelude::*;
 
-// region:      --- Asset Constants
+mod player;
 
+// region:      --- Asset Constants
 const PLAYER_SPRITE: &str = "player_a_01.png";
 const PLAYER_SIZE: (f32, f32) = (144., 75.);
 
 const SPRITE_SCALE: f32 = 0.5;
+
 // endregion:   --- Asset Constants
 
 // region:      --- Resources
