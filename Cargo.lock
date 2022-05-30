@@ -1564,6 +1564,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "greeta"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "rand",
+]
+
+[[package]]
 name = "guessing_game"
 version = "0.1.0"
 dependencies = [
@@ -1590,14 +1598,6 @@ dependencies = [
  "ahash",
  "serde",
 ]
-
-[[package]]
-name = "hello-cargo"
-version = "0.1.0"
-
-[[package]]
-name = "hello_world"
-version = "0.1.0"
 
 [[package]]
 name = "hermit-abi"
@@ -2539,13 +2539,6 @@ dependencies = [
  "base64",
  "bitflags",
  "serde",
-]
-
-[[package]]
-name = "rust_app"
-version = "0.1.0"
-dependencies = [
- "rand",
 ]
 
 [[package]]
