@@ -4,6 +4,8 @@ use bevy::prelude::*;
 
 const PLAYER_SPRITE: &str = "player_a_01.png";
 const PLAYER_SIZE: (f32, f32) = (144., 75.);
+
+const SPRITE_SCALE: f32 = 0.5;
 // endregion:   --- Asset Constants
 
 fn main() {
@@ -41,7 +43,8 @@ fn setup_system(
     commands.spawn_bundle(SpriteBundle {
         texture: asset_server.load(PLAYER_SPRITE),
         transform: Transform {
-            translation: Vec3::new(0., bottom + PLAYER_SIZE.1 / 2. + 5., 10.),
+            translation: Vec3::new(0., bottom + PLAYER_SIZE.1 / 2. * SPRITE_SCALE + 5., 10.),
+            scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.),
             ..Default::default()
         },
         ..Default::default()
