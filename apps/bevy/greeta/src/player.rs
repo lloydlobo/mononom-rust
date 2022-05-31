@@ -50,19 +50,25 @@ fn player_fire_system(
                 player_transform.translation.x,
                 player_transform.translation.y,
             );
+            let x_offset = PLAYER_SIZE.0 / 2.0 * SPRITE_SCALE - 5.0; // 5.0 is a ratio
 
-            commands
-                .spawn_bundle(SpriteBundle {
-                    texture: game_textures.player_laser.clone(),
-                    transform: Transform {
-                        translation: Vec3::new(x, y, 0.),
-                        scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.),
+            let mut spawn_laser = |x_offset: f32| {
+                commands
+                    .spawn_bundle(SpriteBundle {
+                        texture: game_textures.player_laser.clone(),
+                        transform: Transform {
+                            translation: Vec3::new(x + x_offset, y + 0.0, 0.),
+                            scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.),
+                            ..Default::default()
+                        },
                         ..Default::default()
-                    },
-                    ..Default::default()
-                })
-                .insert(Movable { auto_despawn: true })
-                .insert(Velocity { x: 0.0, y: 1.0 }); // similar to player movable system velocity but y is 1.0
+                    })
+                    .insert(Movable { auto_despawn: true })
+                    .insert(Velocity { x: 0.0, y: 1.0 }); // similar to player movable system velocity but y is 1.0
+            };
+
+            spawn_laser(x_offset);
+            spawn_laser(-x_offset);
         }
     }
 }
