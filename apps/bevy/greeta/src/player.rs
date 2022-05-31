@@ -86,11 +86,11 @@ fn player_keyboard_event_system(
 }
 
 // restrict player to window edges
-pub(crate) fn player_restrict_win_edges(win_size: &Res<WinSize>, player_translation: &mut Vec3) {
+pub(crate) fn player_restrict_win_edges(win_size: &Res<WinSize>, translation: &mut Vec3) {
     let win_edge = (win_size.w - PLAYER_SIZE.0 / 2.) * SPRITE_SCALE;
-    if player_translation.x < -win_edge {
-        player_translation.x = -win_edge;
-    } else if player_translation.x > win_edge {
-        player_translation.x = win_edge;
+    if translation.x < -win_edge {
+        translation.x = -win_edge;
+    } else if translation.x > win_edge {
+        translation.x = win_edge;
     }
 }

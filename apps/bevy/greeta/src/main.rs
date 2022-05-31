@@ -1,38 +1,29 @@
 #![allow(unused)] // silence unused warnings while exploring (to comment out)
 
 use bevy::prelude::*;
-use player::{player_restrict_win_edges, PlayerPlugin};
-
 use components::{Movable, Player, Velocity};
-
+use player::{player_restrict_win_edges, PlayerPlugin};
 mod components;
 mod player;
 
 // region:      --- Asset Constants
 const PLAYER_SPRITE: &str = "player_a_01.png";
 const PLAYER_SIZE: (f32, f32) = (83., 75.);
-
 const PLAYER_LASER_SPRITE: &str = "laser_a_01.png";
 const PLAYER_LASER_SIZE: (f32, f32) = (51., 48.);
-
 const SPRITE_SCALE: f32 = 0.5;
-
 // endregion:   --- Asset Constants
 
 // region:      --- Game Constants
-
 const TIME_STEP: f32 = 1.0 / 60.0;
 const BASE_SPEED: f32 = 500.0;
-
 // endregion:   --- Game Constants
 
 // region:      --- Resources
-
 pub struct WinSize {
     pub w: f32,
     pub h: f32,
 }
-
 struct GameTextures {
     player: Handle<Image>,
     player_laser: Handle<Image>,
@@ -88,16 +79,31 @@ fn movable_system(
     mut query: Query<(Entity, &Velocity, &mut Transform, &Movable)>,
 ) {
     for (entity, velocity, mut transform, movable) in query.iter_mut() {
-        let player_translation = &mut transform.translation;
-        player_translation.x += velocity.x * TIME_STEP * BASE_SPEED;
-        player_translation.y += velocity.y * TIME_STEP * BASE_SPEED;
+        let translation = &mut transform.translation;
+        translation.x += velocity.x * TIME_STEP * BASE_SPEED;
+        translation.y += velocity.y * TIME_STEP * BASE_SPEED;
 
-        player_restrict_win_edges(&win_size, player_translation);
+        // region:      --- Movable Boundary Restrictions
+        if movable.auto_despawn {
+            //despawn when off screen
+            const MARGIN: f32 = 200.0;
+            if translation.y > win_size.h / 2.0 + MARGIN
+                || translation.y < -win_size.h / 2.0 - MARGIN
+                || translation.x > win_size.w / 2.0 + MARGIN
+                || translation.x < -win_size.w / 2.0 - MARGIN
+            {
+                println!("--> despawn, {entity:?}");
+                commands.entity(entity).despawn();
+            }
+        }
+        // endregion:   --- Movable Boundary Restrictions
+
+        player_restrict_win_edges(&win_size, translation);
     }
 }
-
 // use For dev, faster recompile. (dynamic link bevy framework)
 // `cargo run --release --features bevy/dynamic`
 
 // #region:      --- ASSET_SERVER.LOAD()
 // By default the ROOT is the directory of the Application, but this can be overridden by setting the "CARGO_MANIFEST_DIR" environment variable (see https://doc.rust-lang.org/cargo/reference/environment-variables.html) to another directory. When the application is run through Cargo, then "CARGO_MANIFEST_DIR" is automatically set to the root folder of your crate (workspace)
+// endregion:   --- ASSET_SERVER.LOAD()
