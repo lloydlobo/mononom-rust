@@ -1,4 +1,7 @@
-use crate::{GameTextures, WinSize, SPRITE_SCALE};
+use crate::{
+    components::{Opponent, SpriteSize},
+    GameTextures, WinSize, OPPONENT_SIZE, SPRITE_SCALE,
+};
 use bevy::prelude::*;
 use rand::{thread_rng, Rng};
 
@@ -22,13 +25,16 @@ fn opponent_spawn_system(
     let x = rng.gen_range(-w_span..w_span);
     let y = rng.gen_range(-h_span..h_span);
 
-    commands.spawn_bundle(SpriteBundle {
-        texture: game_textures.opponent.clone(),
-        transform: Transform {
-            translation: Vec3::new(x, y, 10.0),
-            scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.0),
+    commands
+        .spawn_bundle(SpriteBundle {
+            texture: game_textures.opponent.clone(),
+            transform: Transform {
+                translation: Vec3::new(x, y, 10.0),
+                scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.0),
+                ..Default::default()
+            },
             ..Default::default()
-        },
-        ..Default::default()
-    });
+        })
+        .insert(Opponent)
+        .insert(SpriteSize::from(OPPONENT_SIZE));
 }

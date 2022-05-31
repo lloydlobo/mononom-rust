@@ -1,7 +1,9 @@
+// `cargo run --release --features bevy/dynamic`
 #![allow(unused)] // silence unused warnings while exploring (to comment out)
 
-use bevy::prelude::*;
-use components::{Movable, Player, Velocity};
+pub(crate) use bevy::math::Vec3Swizzles;
+use bevy::{prelude::*, sprite::collide_aabb::collide};
+use components::{FromPlayer, Laser, Movable, Opponent, Player, SpriteSize, Velocity};
 use opponent::OpponentPlugin;
 use player::{player_restrict_win_edges, PlayerPlugin};
 
@@ -81,6 +83,7 @@ fn main() {
         .add_plugin(OpponentPlugin)
         .add_startup_system(setup_system)
         .add_system(movable_system)
+        .add_system(player_laser_hit_opponent_system)
         .run();
 }
 
@@ -143,8 +146,39 @@ fn movable_system(
         player_restrict_win_edges(&win_size, translation);
     }
 }
-// use For dev, faster recompile. (dynamic link bevy framework)
-// `cargo run --release --features bevy/dynamic`
+
+fn player_laser_hit_opponent_system(
+    mut commands: Commands,
+    laser_query: Query<(Entity, &Transform, &SpriteSize), (With<Laser>, With<FromPlayer>)>,
+    opponent_query: Query<(Entity, &Transform, &SpriteSize), With<Opponent>>,
+) {
+    // iterate through lasers
+    for (laser_entity, laser_transform, laser_size) in laser_query.iter() {
+        let laser_scale = Vec2::from(laser_transform.scale.xy());
+
+        // iterate through opponents
+        for (opponent_entity, opponent_transform, opponent_size) in opponent_query.iter() {
+            let opponent_scale = Vec2::from(opponent_transform.scale.xy());
+
+            // determine if there is a collision
+            let collision = collide(
+                laser_transform.translation, // laser position
+                laser_size.0 * laser_scale,
+                opponent_transform.translation, // laser position
+                opponent_size.0 * laser_scale,
+            );
+
+            // perform collision logic
+            if let Some(_) = collision {
+                // remove the opponent after collision
+                commands.entity(opponent_entity).despawn();
+
+                // remove the laser which hit the opponent right after collision
+                commands.entity(laser_entity).despawn();
+            } // we don't care about the data of the collision hence Some(_)
+        }
+    }
+}
 
 // #region:      --- ASSET_SERVER.LOAD()
 // By default the ROOT is the directory of the Application, but this can be overridden by setting the "CARGO_MANIFEST_DIR" environment variable (see https://doc.rust-lang.org/cargo/reference/environment-variables.html) to another directory. When the application is run through Cargo, then "CARGO_MANIFEST_DIR" is automatically set to the root folder of your crate (workspace)

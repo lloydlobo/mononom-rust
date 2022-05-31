@@ -1,5 +1,7 @@
-use crate::components::{Movable, Player, Velocity};
-use crate::{GameTextures, WinSize, BASE_SPEED, PLAYER_SIZE, SPRITE_SCALE, TIME_STEP};
+use crate::components::{FromPlayer, Laser, Movable, Player, SpriteSize, Velocity};
+use crate::{
+    GameTextures, WinSize, BASE_SPEED, PLAYER_LASER_SIZE, PLAYER_SIZE, SPRITE_SCALE, TIME_STEP,
+};
 use bevy::{prelude::*, window};
 // use bevy::render::texture;
 
@@ -32,6 +34,7 @@ fn player_spawn_system(
             ..Default::default()
         }) // this is a component, add more with chaining insert
         .insert(Player)
+        .insert(SpriteSize::from(PLAYER_SIZE))
         .insert(Movable {
             auto_despawn: false,
         })
@@ -63,6 +66,9 @@ fn player_fire_system(
                         },
                         ..Default::default()
                     })
+                    .insert(Laser)
+                    .insert(FromPlayer)
+                    .insert(SpriteSize::from(PLAYER_LASER_SIZE))
                     .insert(Movable { auto_despawn: true })
                     .insert(Velocity { x: 0.0, y: 1.0 }); // similar to player movable system velocity but y is 1.0
             };
