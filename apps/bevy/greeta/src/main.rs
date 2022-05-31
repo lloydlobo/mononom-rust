@@ -3,7 +3,9 @@
 
 pub(crate) use bevy::math::Vec3Swizzles;
 use bevy::{prelude::*, sprite::collide_aabb::collide};
-use components::{FromPlayer, Laser, Movable, Opponent, Player, SpriteSize, Velocity};
+use components::{
+    ExplosionToSpawn, FromPlayer, Laser, Movable, Opponent, Player, SpriteSize, Velocity,
+};
 use opponent::OpponentPlugin;
 use player::{player_restrict_win_edges, PlayerPlugin};
 
@@ -22,6 +24,8 @@ const OPPONENT_SPRITE: &str = "opponent_a_01.png";
 const OPPONENT_SIZE: (f32, f32) = (144.0, 75.0);
 const OPPONENT_LASER_SPRITE: &str = "laser_a_02.png";
 const OPPONENT_LASER_SIZE: (f32, f32) = (17.0, 55.0);
+
+const EXPLOSION_SHEET: &str = "explo_a_sheet.png";
 
 const SPRITE_SCALE: f32 = 0.5;
 
@@ -45,6 +49,7 @@ struct GameTextures {
     player_laser: Handle<Image>,
     opponent: Handle<Image>,
     opponent_laser: Handle<Image>,
+    explosion: Handle<TextureAtlas>,
 }
 
 // endregion:   --- Resources
@@ -92,6 +97,7 @@ fn main() {
 fn setup_system(
     mut commands: Commands,
     asset_server: Res<AssetServer>, // mut windows: ResMut<Windows>,
+    mut texture_atlases: ResMut<Assets<TextureAtlas>>,
     mut windows: ResMut<Windows>,
 ) {
     // set camera first
@@ -104,16 +110,22 @@ fn setup_system(
     // position window for now
     window.set_position(IVec2::new(760, 200));
 
+    // add WinSize resource
     let win_size = WinSize { w: win_w, h: win_h };
     commands.insert_resource(win_size);
+
+    // create explosion texture atlas
+    let texture_handle = asset_server.load(EXPLOSION_SHEET);
+    let texture_atlas = TextureAtlas::from_grid(texture_handle, Vec2::new(64.0, 64.0), 4, 4);
+    let explosion = texture_atlases.add(texture_atlas);
 
     // add GameTextures resource
     let game_textures = GameTextures {
         player: asset_server.load(PLAYER_SPRITE),
         player_laser: asset_server.load(PLAYER_LASER_SPRITE),
-
         opponent: asset_server.load(OPPONENT_SPRITE),
         opponent_laser: asset_server.load(OPPONENT_LASER_SPRITE),
+        explosion,
     };
     commands.insert_resource(game_textures); // it's done only one time
 }
@@ -175,11 +187,18 @@ fn player_laser_hit_opponent_system(
 
                 // remove the laser which hit the opponent right after collision
                 commands.entity(laser_entity).despawn();
+
+                //spawn the explosionToSpawn
+                commands
+                    .spawn()
+                    .insert(ExplosionToSpawn(opponent_transform.translation.clone()));
             } // we don't care about the data of the collision hence Some(_)
         }
     }
 }
 
 // #region:      --- ASSET_SERVER.LOAD()
+
 // By default the ROOT is the directory of the Application, but this can be overridden by setting the "CARGO_MANIFEST_DIR" environment variable (see https://doc.rust-lang.org/cargo/reference/environment-variables.html) to another directory. When the application is run through Cargo, then "CARGO_MANIFEST_DIR" is automatically set to the root folder of your crate (workspace)
+
 // endregion:   --- ASSET_SERVER.LOAD()
