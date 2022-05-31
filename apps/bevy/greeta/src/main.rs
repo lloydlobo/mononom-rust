@@ -11,7 +11,9 @@ mod player;
 // region:      --- Asset Constants
 const PLAYER_SPRITE: &str = "player_a_01.png";
 const PLAYER_SIZE: (f32, f32) = (83., 75.);
-const PLAYER_ACTION: &str = "laser_a_01.png";
+
+const PLAYER_LASER_SPRITE: &str = "laser_a_01.png";
+const PLAYER_LASER_SIZE: (f32, f32) = (51., 48.);
 
 const SPRITE_SCALE: f32 = 0.5;
 
@@ -33,6 +35,7 @@ pub struct WinSize {
 
 struct GameTextures {
     player: Handle<Image>,
+    player_laser: Handle<Image>,
 }
 // endregion:   --- Resources
 
@@ -73,9 +76,13 @@ fn setup_system(
     // add GameTextures resource
     let game_textures = GameTextures {
         player: asset_server.load(PLAYER_SPRITE),
+        player_laser: asset_server.load(PLAYER_LASER_SPRITE),
     };
-    commands.insert_resource(game_textures);
+    commands.insert_resource(game_textures); // it's done only one time
 }
 
 // use For dev, faster recompile. (dynamic link bevy framework)
 // `cargo run --release --features bevy/dynamic`
+
+// #region:      --- ASSET_SERVER.LOAD()
+// By default the ROOT is the directory of the Application, but this can be overridden by setting the "CARGO_MANIFEST_DIR" environment variable (see https://doc.rust-lang.org/cargo/reference/environment-variables.html) to another directory. When the application is run through Cargo, then "CARGO_MANIFEST_DIR" is automatically set to the root folder of your crate (workspace)

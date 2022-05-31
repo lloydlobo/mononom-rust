@@ -9,7 +9,8 @@ impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app.add_startup_system_to_stage(StartupStage::PostStartup, player_spawn_system)
             .add_system(player_movement_system)
-            .add_system(player_keyboard_event_system);
+            .add_system(player_keyboard_event_system)
+            .add_system(player_fire_system);
     }
 }
 
@@ -33,6 +34,33 @@ fn player_spawn_system(
         .insert(Player)
         .insert(Velocity { x: 0.0, y: 0.0 }); // replace x: 1.0 with x: 0.0 as keyboard player start at rest
 }
+
+fn player_fire_system(
+    mut commands: Commands,
+    keyboard: Res<Input<KeyCode>>,
+    game_textures: Res<GameTextures>,
+    query: Query<&Transform, With<Player>>,
+) {
+    if let Ok(player_transform) = query.get_single() {
+        if keyboard.just_pressed(KeyCode::Space) {
+            let (x, y) = (
+                player_transform.translation.x,
+                player_transform.translation.y,
+            );
+
+            commands.spawn_bundle(SpriteBundle {
+                texture: game_textures.player_laser.clone(),
+                transform: Transform {
+                    translation: Vec3::new(x, y, 0.),
+                    scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.),
+                    ..Default::default()
+                },
+                ..Default::default()
+            });
+        }
+    }
+}
+
 // Magic of Bevy: Decouple the movement from the rendering
 fn player_keyboard_event_system(
     keyboard: Res<Input<KeyCode>>,
