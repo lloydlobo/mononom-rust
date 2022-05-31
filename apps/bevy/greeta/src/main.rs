@@ -1,9 +1,9 @@
 #![allow(unused)] // silence unused warnings while exploring (to comment out)
 
 use bevy::prelude::*;
-use player::PlayerPlugin;
+use player::{player_restrict_win_edges, PlayerPlugin};
 
-use components::{Player, Velocity};
+use components::{Movable, Player, Velocity};
 
 mod components;
 mod player;
@@ -51,6 +51,7 @@ fn main() {
         .add_plugins(DefaultPlugins)
         .add_plugin(PlayerPlugin)
         .add_startup_system(setup_system)
+        .add_system(movable_system)
         .run();
 }
 
@@ -79,6 +80,20 @@ fn setup_system(
         player_laser: asset_server.load(PLAYER_LASER_SPRITE),
     };
     commands.insert_resource(game_textures); // it's done only one time
+}
+
+fn movable_system(
+    mut commands: Commands,
+    win_size: Res<WinSize>,
+    mut query: Query<(Entity, &Velocity, &mut Transform, &Movable)>,
+) {
+    for (entity, velocity, mut transform, movable) in query.iter_mut() {
+        let player_translation = &mut transform.translation;
+        player_translation.x += velocity.x * TIME_STEP * BASE_SPEED;
+        player_translation.y += velocity.y * TIME_STEP * BASE_SPEED;
+
+        player_restrict_win_edges(&win_size, player_translation);
+    }
 }
 
 // use For dev, faster recompile. (dynamic link bevy framework)

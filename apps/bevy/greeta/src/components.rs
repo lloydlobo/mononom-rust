@@ -6,6 +6,12 @@ pub struct Velocity {
     pub x: f32,
     pub y: f32,
 }
+
+#[derive(Component)]
+pub struct Movable {
+    pub auto_despawn: bool, // player won't despawn when they go off screen but laser will
+}
+
 // endregion:   --- Common Components
 
 // region:      --- Player Components
