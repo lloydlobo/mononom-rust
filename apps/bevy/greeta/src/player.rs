@@ -1,6 +1,6 @@
 use crate::components::{Player, Velocity};
 use crate::{GameTextures, WinSize, BASE_SPEED, PLAYER_SIZE, SPRITE_SCALE, TIME_STEP};
-use bevy::prelude::*;
+use bevy::{prelude::*, window};
 // use bevy::render::texture;
 
 pub struct PlayerPlugin;
@@ -51,10 +51,20 @@ fn player_keyboard_event_system(
     // for velocity in &mut query.iter() {}
 }
 
-fn player_movement_system(mut query: Query<(&Velocity, &mut Transform), With<Player>>) {
+fn player_movement_system(
+    mut query: Query<(&Velocity, &mut Transform), With<Player>>,
+    win_size: Res<WinSize>,
+) {
     for (velocity, mut transform) in query.iter_mut() {
         let player_translation = &mut transform.translation;
         player_translation.x += velocity.x * TIME_STEP * BASE_SPEED;
         player_translation.y += velocity.y * TIME_STEP * BASE_SPEED;
+
+        let win_edge = (win_size.w - PLAYER_SIZE.0 / 2.) * SPRITE_SCALE;
+        if player_translation.x < -win_edge {
+            player_translation.x = -win_edge;
+        } else if player_translation.x > win_edge {
+            player_translation.x = win_edge;
+        }
     }
 }
