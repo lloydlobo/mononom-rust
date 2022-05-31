@@ -9,5 +9,6 @@ pub struct Velocity {
 // endregion:   --- Common Components
 
 // region:      --- Player Components
+#[derive(Component)]
 pub struct Player;
 // endregion:   --- Player Components

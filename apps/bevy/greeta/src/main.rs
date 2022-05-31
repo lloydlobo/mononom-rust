@@ -3,6 +3,9 @@
 use bevy::prelude::*;
 use player::PlayerPlugin;
 
+use components::{Player, Velocity};
+
+mod components;
 mod player;
 
 // region:      --- Asset Constants
