@@ -4,7 +4,8 @@
 pub(crate) use bevy::math::Vec3Swizzles;
 use bevy::{prelude::*, sprite::collide_aabb::collide};
 use components::{
-    ExplosionToSpawn, FromPlayer, Laser, Movable, Opponent, Player, SpriteSize, Velocity,
+    Explosion, ExplosionTimer, ExplosionToSpawn, FromPlayer, Laser, Movable, Opponent, Player,
+    SpriteSize, Velocity,
 };
 use opponent::OpponentPlugin;
 use player::{player_restrict_win_edges, PlayerPlugin};
@@ -26,6 +27,7 @@ const OPPONENT_LASER_SPRITE: &str = "laser_a_02.png";
 const OPPONENT_LASER_SIZE: (f32, f32) = (17.0, 55.0);
 
 const EXPLOSION_SHEET: &str = "explo_a_sheet.png";
+const EXPLOSION_LEN: usize = 16;
 
 const SPRITE_SCALE: f32 = 0.5;
 
@@ -89,6 +91,8 @@ fn main() {
         .add_startup_system(setup_system)
         .add_system(movable_system)
         .add_system(player_laser_hit_opponent_system)
+        .add_system(explosion_to_spawn_system)
+        .add_system(explosion_animation_system)
         .run();
 }
 
@@ -193,6 +197,46 @@ fn player_laser_hit_opponent_system(
                     .spawn()
                     .insert(ExplosionToSpawn(opponent_transform.translation.clone()));
             } // we don't care about the data of the collision hence Some(_)
+        }
+    }
+}
+
+fn explosion_to_spawn_system(
+    mut commands: Commands,
+    game_textures: Res<GameTextures>,
+    query: Query<(Entity, &ExplosionToSpawn)>,
+) {
+    for (explosion_spawn_entity, explosion_to_spawn) in query.iter() {
+        // spawn the explosion sprite
+        commands
+            .spawn_bundle(SpriteSheetBundle {
+                texture_atlas: game_textures.explosion.clone(),
+                transform: Transform {
+                    translation: explosion_to_spawn.0, // no clone needed
+                    ..Default::default()
+                },
+                ..Default::default()
+            })
+            .insert(Explosion)
+            .insert(ExplosionTimer::default());
+
+        // despawn the explosionToSpawn
+        commands.entity(explosion_spawn_entity).despawn();
+    }
+}
+
+fn explosion_animation_system(
+    mut commands: Commands,
+    time: Res<Time>,
+    mut query: Query<(Entity, &mut ExplosionTimer, &mut TextureAtlasSprite), With<Explosion>>,
+) {
+    for (entity, mut timer, mut sprite) in query.iter_mut() {
+        timer.0.tick(time.delta());
+        if timer.0.finished() {
+            sprite.index += 1; // move to the next sprite frame cell/grid
+            if sprite.index >= EXPLOSION_LEN {
+                commands.entity(entity).despawn();
+            }
         }
     }
 }
