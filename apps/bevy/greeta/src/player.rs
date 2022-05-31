@@ -1,5 +1,5 @@
 use crate::components::{Player, Velocity};
-use crate::{GameTextures, WinSize, PLAYER_SIZE, SPRITE_SCALE};
+use crate::{GameTextures, WinSize, BASE_SPEED, PLAYER_SIZE, SPRITE_SCALE, TIME_STEP};
 use bevy::prelude::*;
 // use bevy::render::texture;
 
@@ -36,7 +36,7 @@ fn player_spawn_system(
 fn player_movement_system(mut query: Query<(&Velocity, &mut Transform), With<Player>>) {
     for (velocity, mut transform) in query.iter_mut() {
         let translation = &mut transform.translation;
-        translation.x += velocity.x;
-        translation.y += velocity.y;
+        translation.x += velocity.x * TIME_STEP * BASE_SPEED;
+        translation.y += velocity.y * TIME_STEP * BASE_SPEED;
     }
 }
