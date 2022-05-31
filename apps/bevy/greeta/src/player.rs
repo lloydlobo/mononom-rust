@@ -1,6 +1,14 @@
 use crate::{GameTextures, WinSize, PLAYER_SIZE, SPRITE_SCALE};
 use bevy::prelude::*;
 
+pub struct PlayerPlugin;
+
+impl Plugin for PlayerPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_startup_system_to_stage(StartupStage::PostStartup, player_spawn_system);
+    }
+}
+
 fn player_spawn_system(
     mut commands: Commands,
     game_textures: Res<GameTextures>,

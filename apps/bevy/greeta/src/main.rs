@@ -1,6 +1,7 @@
 #![allow(unused)] // silence unused warnings while exploring (to comment out)
 
 use bevy::prelude::*;
+use player::PlayerPlugin;
 
 mod player;
 
@@ -34,8 +35,8 @@ fn main() {
             ..Default::default()
         })
         .add_plugins(DefaultPlugins)
+        .add_plugin(PlayerPlugin)
         .add_startup_system(setup_system)
-        .add_startup_system_to_stage(StartupStage::PostStartup, player_spawn_system)
         .run();
 }
 
@@ -65,22 +66,5 @@ fn setup_system(
     commands.insert_resource(game_textures);
 }
 
-fn player_spawn_system(
-    mut commands: Commands,
-    game_textures: Res<GameTextures>,
-    win_size: Res<WinSize>,
-) {
-    // setup a player
-    let bottom = -win_size.h / 2.;
-    commands.spawn_bundle(SpriteBundle {
-        texture: game_textures.player.clone(),
-        transform: Transform {
-            translation: Vec3::new(0., bottom + PLAYER_SIZE.1 / 2. * SPRITE_SCALE + 5., 10.),
-            scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.),
-            ..Default::default()
-        },
-        ..Default::default()
-    });
-}
-// use For dev, fasterrecompile. (dynamic link bevy framework)
+// use For dev, faster recompile. (dynamic link bevy framework)
 // `cargo run --release --features bevy/dynamic`
