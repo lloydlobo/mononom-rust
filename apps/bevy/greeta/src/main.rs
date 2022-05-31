@@ -64,7 +64,7 @@ fn setup_system(
     let (win_w, win_h) = (window.width(), window.height());
 
     // position window for now
-    window.set_position(IVec2::new(800, 200));
+    window.set_position(IVec2::new(760, 200));
 
     let win_size = WinSize { w: win_w, h: win_h };
     commands.insert_resource(win_size);

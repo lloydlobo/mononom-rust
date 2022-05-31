@@ -60,11 +60,16 @@ fn player_movement_system(
         player_translation.x += velocity.x * TIME_STEP * BASE_SPEED;
         player_translation.y += velocity.y * TIME_STEP * BASE_SPEED;
 
-        let win_edge = (win_size.w - PLAYER_SIZE.0 / 2.) * SPRITE_SCALE;
-        if player_translation.x < -win_edge {
-            player_translation.x = -win_edge;
-        } else if player_translation.x > win_edge {
-            player_translation.x = win_edge;
-        }
+        player_restrict_win_edges(&win_size, player_translation);
+    }
+}
+
+// restrict player to window edges
+fn player_restrict_win_edges(win_size: &Res<WinSize>, player_translation: &mut Vec3) {
+    let win_edge = (win_size.w - PLAYER_SIZE.0 / 2.) * SPRITE_SCALE;
+    if player_translation.x < -win_edge {
+        player_translation.x = -win_edge;
+    } else if player_translation.x > win_edge {
+        player_translation.x = win_edge;
     }
 }
