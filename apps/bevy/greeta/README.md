@@ -1,5 +1,18 @@
 # Greeta
 
+## Development
+
+### To build a project with NX
+
+```bash
+npx nx generate @nxrs/cargo:binary <project_name> --directory=bevy --tags='bevy, game, rust' --no-interactive
+```
+
+### Running a binary
+
+```bash
+cargo run --bin <project_name> --release --features bevy/dynamic
+```
 
 ## Attribution
 
@@ -14,3 +27,7 @@
 ### Bone
 
 <https://www.freepnglogos.com/pics/bone">
+
+### Pixel Humans
+
+<https://pixelfrog-assets.itch.io/pirate-bomb>
