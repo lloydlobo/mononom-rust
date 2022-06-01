@@ -39,6 +39,7 @@ const SPRITE_SCALE: f32 = 0.5;
 const TIME_STEP: f32 = 1.0 / 60.0;
 const BASE_SPEED: f32 = 500.0;
 
+const PLAYER_RESPAWN_DELAY: f64 = 2.0;
 const OPPONENT_MAX: u32 = 2;
 
 // endregion:   --- Game Constants
@@ -59,6 +60,34 @@ struct GameTextures {
 
 // endregion:   --- Resources
 struct OpponentCount(u32);
+
+/// Player State
+/// # Description
+/// This is the state of the player.
+/// # Notes
+/// This is a simple enum that is used to track the state of the player.
+struct PlayerState {
+    on: bool,       // alive
+    last_shot: f64, // -1 if not shot / hit
+}
+impl Default for PlayerState {
+    fn default() -> Self {
+        Self {
+            on: false,
+            last_shot: -1.,
+        }
+    }
+}
+impl PlayerState {
+    pub fn shot(&mut self, time: f64) {
+        self.on = false;
+        self.last_shot = time;
+    }
+    pub fn spawned(&mut self) {
+        self.on = true;
+        self.last_shot = -1.;
+    }
+}
 
 /// # Main Application
 fn main() {
