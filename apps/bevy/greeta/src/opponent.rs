@@ -1,3 +1,5 @@
+use std::f32::consts::PI;
+
 use crate::{
     components::{FromOpponent, Laser, Movable, Opponent, SpriteSize, Velocity},
     GameTextures, OpponentCount, WinSize, OPPONENT_LASER_SIZE, OPPONENT_MAX, OPPONENT_SIZE,
@@ -80,6 +82,7 @@ fn opponent_fire_system(
                 texture: game_textures.opponent_laser.clone(),
                 transform: Transform {
                     translation: Vec3::new(x, y - 15.0, 0.0),
+                    rotation: Quat::from_rotation_x(PI),
                     scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.0),
                     ..Default::default()
                 },
