@@ -19,7 +19,7 @@ mod player;
 const PLAYER_SPRITE: &str = "player_a_01.png";
 const PLAYER_SIZE: (f32, f32) = (83.0, 75.0);
 const PLAYER_LASER_SPRITE: &str = "laser_a_01.png";
-const PLAYER_LASER_SIZE: (f32, f32) = (51.0, 48.0);
+const PLAYER_LASER_SIZE: (f32, f32) = (17.0, 16.0);
 
 const OPPONENT_SPRITE: &str = "opponent_a_01.png";
 const OPPONENT_SIZE: (f32, f32) = (80.0, 72.0);
