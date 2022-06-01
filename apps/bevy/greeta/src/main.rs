@@ -2,7 +2,7 @@
 #![allow(unused)] // silence unused warnings while exploring (to comment out)
 
 pub(crate) use bevy::math::Vec3Swizzles;
-use bevy::{prelude::*, sprite::collide_aabb::collide};
+use bevy::{prelude::*, sprite::collide_aabb::collide, utils::HashSet};
 use components::{
     Explosion, ExplosionTimer, ExplosionToSpawn, FromPlayer, Laser, Movable, Opponent, Player,
     SpriteSize, Velocity,
@@ -24,7 +24,7 @@ const PLAYER_LASER_SIZE: (f32, f32) = (51.0, 48.0);
 const OPPONENT_SPRITE: &str = "opponent_a_01.png";
 const OPPONENT_SIZE: (f32, f32) = (80.0, 72.0);
 // const OPPONENT_SIZE: (f32, f32) = (144.0, 75.0);
-const OPPONENT_LASER_SPRITE: &str = "laser_a_02.png";
+const OPPONENT_LASER_SPRITE: &str = "laser_b_01.png";
 const OPPONENT_LASER_SIZE: (f32, f32) = (17.0, 55.0);
 
 const EXPLOSION_SHEET: &str = "explo_a_sheet.png";
@@ -58,25 +58,6 @@ struct GameTextures {
 // endregion:   --- Resources
 
 /// # Main Application
-/// This is the main application.
-/// It is a simple game that has a player and an opponent.
-/// The player and opponent can move and fire.
-/// # Game States
-/// - `MainMenu`: The main menu.
-/// - `Game`: The game.
-/// - `GameOver`: The game over screen.
-/// # Game Events
-/// - `GameStart`: The game starts.
-/// - `GameOver`: The game ends.
-/// - `GameRestart`: The game restarts.
-/// - `GameQuit`: The game quits.
-/// # Game Components
-/// - `Player`: The player controlled by the user.
-/// - `Opponent`: The opponent controlled by the computer.
-/// - `Movable`: The movable component.
-/// - `Velocity`: The velocity component.
-/// - `Laser`: The laser fired by the player.
-/// - `Laser`: The laser fired by the opponent.
 fn main() {
     App::new()
         .insert_resource(ClearColor(Color::rgb(0.04, 0.04, 0.04)))
@@ -169,12 +150,26 @@ fn player_laser_hit_opponent_system(
     laser_query: Query<(Entity, &Transform, &SpriteSize), (With<Laser>, With<FromPlayer>)>,
     opponent_query: Query<(Entity, &Transform, &SpriteSize), With<Opponent>>,
 ) {
+    // WARN bevy_ecs::system::commands: Could not despawn entity 66450v1 because it doesn't exist in this World. // If this command was added to a newly spawned entity, ensure that you have not despawned that entity within the same stage. // This may have occurred due to system order ambiguity, or if the spawning system has multiple command buffers
+    // Book keeping or caching despawned entities is not recommended?
+    let mut despawned_entities: HashSet<Entity> = HashSet::new();
+
     // iterate through lasers
     for (laser_entity, laser_transform, laser_size) in laser_query.iter() {
+        if despawned_entities.contains(&laser_entity) {
+            continue;
+        }
+
         let laser_scale = Vec2::from(laser_transform.scale.xy());
 
         // iterate through opponents
         for (opponent_entity, opponent_transform, opponent_size) in opponent_query.iter() {
+            if despawned_entities.contains(&opponent_entity)
+                || despawned_entities.contains(&laser_entity)
+            {
+                continue;
+            } // if opponent is despawned, skip - also avoids compiler warning
+
             let opponent_scale = Vec2::from(opponent_transform.scale.xy());
 
             // determine if there is a collision
@@ -189,9 +184,11 @@ fn player_laser_hit_opponent_system(
             if let Some(_) = collision {
                 // remove the opponent after collision
                 commands.entity(opponent_entity).despawn();
+                despawned_entities.insert(opponent_entity);
 
                 // remove the laser which hit the opponent right after collision
                 commands.entity(laser_entity).despawn();
+                despawned_entities.insert(laser_entity);
 
                 //spawn the explosionToSpawn
                 commands

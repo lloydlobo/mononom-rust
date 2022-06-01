@@ -9,9 +9,9 @@ pub struct OpponentPlugin;
 
 impl Plugin for OpponentPlugin {
     fn build(&self, app: &mut App) {
-        app.add_startup_system_to_stage(StartupStage::PostStartup, opponent_spawn_system);
+        // app.add_startup_system_to_stage(StartupStage::PostStartup, opponent_spawn_system);
         // 1 opponent only
-        // app.add_system(opponent_spawn_system); // multiple opponents at once
+        app.add_system(opponent_spawn_system); // multiple opponents at once
     }
 }
 
