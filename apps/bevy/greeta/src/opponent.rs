@@ -3,7 +3,7 @@ use crate::{
     GameTextures, OpponentCount, WinSize, OPPONENT_LASER_SIZE, OPPONENT_MAX, OPPONENT_SIZE,
     SPRITE_SCALE,
 };
-use bevy::{core::FixedTimestep, prelude::*};
+use bevy::{core::FixedTimestep, ecs::schedule::ShouldRun, prelude::*};
 use rand::{thread_rng, Rng};
 
 pub struct OpponentPlugin;
@@ -17,7 +17,11 @@ impl Plugin for OpponentPlugin {
                 .with_run_criteria(FixedTimestep::step(1.0))
                 .with_system(opponent_spawn_system),
         )
-        .add_system(opponent_fire_system);
+        .add_system_set(
+            SystemSet::new()
+                .with_run_criteria(opponent_fire_criteria)
+                .with_system(opponent_fire_system),
+        );
     }
 }
 
@@ -49,6 +53,14 @@ fn opponent_spawn_system(
             .insert(SpriteSize::from(OPPONENT_SIZE));
 
         opponent_count.0 += 1;
+    }
+}
+
+fn opponent_fire_criteria() -> ShouldRun {
+    if thread_rng().gen_bool(1.0 / 60.0) {
+        ShouldRun::Yes
+    } else {
+        ShouldRun::No
     }
 }
 
