@@ -1,11 +1,13 @@
 {
     "cSpell.words": [
         "aabb",
+        "consts",
         "despawn",
         "despawned",
         "explo",
         "Greeta",
         "nxrs",
+        "RESPAWN",
         "rustc",
         "Timestep"
     ]

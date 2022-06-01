@@ -4,8 +4,8 @@
 pub(crate) use bevy::math::Vec3Swizzles;
 use bevy::{prelude::*, sprite::collide_aabb::collide, utils::HashSet};
 use components::{
-    Explosion, ExplosionTimer, ExplosionToSpawn, FromPlayer, Laser, Movable, Opponent, Player,
-    SpriteSize, Velocity,
+    Explosion, ExplosionTimer, ExplosionToSpawn, FromOpponent, FromPlayer, Laser, Movable,
+    Opponent, Player, SpriteSize, Velocity,
 };
 use opponent::OpponentPlugin;
 use player::{player_restrict_win_edges, PlayerPlugin};
@@ -19,7 +19,7 @@ mod player;
 const PLAYER_SPRITE: &str = "player_a_01.png";
 const PLAYER_SIZE: (f32, f32) = (83.0, 75.0);
 const PLAYER_LASER_SPRITE: &str = "laser_a_01.png";
-const PLAYER_LASER_SIZE: (f32, f32) = (51.0, 48.0);
+const PLAYER_LASER_SIZE: (f32, f32) = (17.0, 16.0);
 
 const OPPONENT_SPRITE: &str = "opponent_a_01.png";
 const OPPONENT_SIZE: (f32, f32) = (80.0, 72.0);
@@ -39,6 +39,7 @@ const SPRITE_SCALE: f32 = 0.5;
 const TIME_STEP: f32 = 1.0 / 60.0;
 const BASE_SPEED: f32 = 500.0;
 
+const PLAYER_RESPAWN_DELAY: f64 = 2.0;
 const OPPONENT_MAX: u32 = 2;
 
 // endregion:   --- Game Constants
@@ -60,6 +61,34 @@ struct GameTextures {
 // endregion:   --- Resources
 struct OpponentCount(u32);
 
+/// Player State
+/// # Description
+/// This is the state of the player.
+/// # Notes
+/// This is a simple enum that is used to track the state of the player.
+struct PlayerState {
+    on: bool,       // alive
+    last_shot: f64, // -1 if not shot / hit
+}
+impl Default for PlayerState {
+    fn default() -> Self {
+        Self {
+            on: false,
+            last_shot: -1.,
+        }
+    }
+}
+impl PlayerState {
+    pub fn shot(&mut self, time: f64) {
+        self.on = false;
+        self.last_shot = time;
+    }
+    pub fn spawned(&mut self) {
+        self.on = true;
+        self.last_shot = -1.;
+    }
+}
+
 /// # Main Application
 fn main() {
     App::new()
@@ -76,6 +105,7 @@ fn main() {
         .add_startup_system(setup_system)
         .add_system(movable_system)
         .add_system(player_laser_hit_opponent_system)
+        .add_system(opponent_laser_hit_player_system)
         .add_system(explosion_to_spawn_system)
         .add_system(explosion_animation_system)
         .run();
@@ -182,7 +212,7 @@ fn player_laser_hit_opponent_system(
                 laser_transform.translation, // laser position
                 laser_size.0 * laser_scale,
                 opponent_transform.translation, // laser position
-                opponent_size.0 * laser_scale,
+                opponent_size.0 * laser_scale,  // why is this laser_scale? and not opponent_scale?
             );
 
             // perform collision logic
@@ -201,6 +231,48 @@ fn player_laser_hit_opponent_system(
                     .spawn()
                     .insert(ExplosionToSpawn(opponent_transform.translation.clone()));
             } // we don't care about the data of the collision hence Some(_)
+        }
+    }
+}
+
+fn opponent_laser_hit_player_system(
+    mut commands: Commands,
+    mut player_state: ResMut<PlayerState>,
+    time: Res<Time>,
+    laser_query: Query<(Entity, &Transform, &SpriteSize), (With<Laser>, With<FromOpponent>)>,
+    player_query: Query<(Entity, &Transform, &SpriteSize), With<Player>>,
+) {
+    // we know there's only one player so..
+    if let Ok((player_entity, player_transform, player_size)) = player_query.get_single() {
+        let player_scale = Vec2::from(player_transform.scale.xy());
+
+        for (laser_entity, laser_transform, laser_size) in laser_query.iter() {
+            let laser_scale = Vec2::from(laser_transform.scale.xy());
+
+            // determine if there is collision}
+            let collision = collide(
+                laser_transform.translation,
+                laser_size.0 * laser_scale,
+                player_transform.translation,
+                player_size.0 * player_scale,
+            );
+
+            // perform collision logic
+            if let Some(_) = collision {
+                // remove the player after collision
+                commands.entity(player_entity).despawn();
+                player_state.shot(time.seconds_since_startup());
+
+                // remove the laser which hit the player right after collision
+                commands.entity(laser_entity).despawn();
+
+                // spawn the explosionToSpawn
+                commands
+                    .spawn()
+                    .insert(ExplosionToSpawn(player_transform.translation.clone()));
+
+                break;
+            }
         }
     }
 }
