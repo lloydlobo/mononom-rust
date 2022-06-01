@@ -2,7 +2,7 @@ use crate::{
     components::{Opponent, SpriteSize},
     GameTextures, OpponentCount, WinSize, OPPONENT_MAX, OPPONENT_SIZE, SPRITE_SCALE,
 };
-use bevy::prelude::*;
+use bevy::{core::FixedTimestep, prelude::*};
 use rand::{thread_rng, Rng};
 
 pub struct OpponentPlugin;
@@ -10,8 +10,12 @@ pub struct OpponentPlugin;
 impl Plugin for OpponentPlugin {
     fn build(&self, app: &mut App) {
         // app.add_startup_system_to_stage(StartupStage::PostStartup, opponent_spawn_system);
-        // 1 opponent only
-        app.add_system(opponent_spawn_system); // multiple opponents at once
+        // app.add_system(opponent_spawn_system); // multiple opponents at once
+        app.add_system_set(
+            SystemSet::new()
+                .with_run_criteria(FixedTimestep::step(1.0))
+                .with_system(opponent_spawn_system),
+        );
     }
 }
 
