@@ -4,8 +4,8 @@
 pub(crate) use bevy::math::Vec3Swizzles;
 use bevy::{prelude::*, sprite::collide_aabb::collide, utils::HashSet};
 use components::{
-    Explosion, ExplosionTimer, ExplosionToSpawn, FromPlayer, Laser, Movable, Opponent, Player,
-    SpriteSize, Velocity,
+    Explosion, ExplosionTimer, ExplosionToSpawn, FromOpponent, FromPlayer, Laser, Movable,
+    Opponent, Player, SpriteSize, Velocity,
 };
 use opponent::OpponentPlugin;
 use player::{player_restrict_win_edges, PlayerPlugin};
@@ -76,6 +76,7 @@ fn main() {
         .add_startup_system(setup_system)
         .add_system(movable_system)
         .add_system(player_laser_hit_opponent_system)
+        .add_system(opponent_laser_hit_player_system)
         .add_system(explosion_to_spawn_system)
         .add_system(explosion_animation_system)
         .run();
@@ -182,7 +183,7 @@ fn player_laser_hit_opponent_system(
                 laser_transform.translation, // laser position
                 laser_size.0 * laser_scale,
                 opponent_transform.translation, // laser position
-                opponent_size.0 * laser_scale,
+                opponent_size.0 * laser_scale,  // why is this laser_scale? and not opponent_scale?
             );
 
             // perform collision logic
@@ -201,6 +202,45 @@ fn player_laser_hit_opponent_system(
                     .spawn()
                     .insert(ExplosionToSpawn(opponent_transform.translation.clone()));
             } // we don't care about the data of the collision hence Some(_)
+        }
+    }
+}
+
+fn opponent_laser_hit_player_system(
+    mut commands: Commands,
+    laser_query: Query<(Entity, &Transform, &SpriteSize), (With<Laser>, With<FromOpponent>)>,
+    player_query: Query<(Entity, &Transform, &SpriteSize), With<Player>>,
+) {
+    // we know there's only one player so..
+    if let Ok((player_entity, player_transform, player_size)) = player_query.get_single() {
+        let player_scale = Vec2::from(player_transform.scale.xy());
+
+        for (laser_entity, laser_transform, laser_size) in laser_query.iter() {
+            let laser_scale = Vec2::from(laser_transform.scale.xy());
+
+            // determine if there is collision}
+            let collision = collide(
+                laser_transform.translation,
+                laser_size.0 * laser_scale,
+                player_transform.translation,
+                player_size.0 * player_scale,
+            );
+
+            // perform collision logic
+            if let Some(_) = collision {
+                // remove the player after collision
+                commands.entity(player_entity).despawn();
+
+                // remove the laser which hit the player right after collision
+                commands.entity(laser_entity).despawn();
+
+                // spawn the explosionToSpawn
+                commands
+                    .spawn()
+                    .insert(ExplosionToSpawn(player_transform.translation.clone()));
+
+                break;
+            }
         }
     }
 }
