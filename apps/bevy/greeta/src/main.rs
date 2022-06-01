@@ -237,6 +237,8 @@ fn player_laser_hit_opponent_system(
 
 fn opponent_laser_hit_player_system(
     mut commands: Commands,
+    mut player_state: ResMut<PlayerState>,
+    time: Res<Time>,
     laser_query: Query<(Entity, &Transform, &SpriteSize), (With<Laser>, With<FromOpponent>)>,
     player_query: Query<(Entity, &Transform, &SpriteSize), With<Player>>,
 ) {
@@ -259,6 +261,7 @@ fn opponent_laser_hit_player_system(
             if let Some(_) = collision {
                 // remove the player after collision
                 commands.entity(player_entity).despawn();
+                player_state.shot(time.seconds_since_startup());
 
                 // remove the laser which hit the player right after collision
                 commands.entity(laser_entity).despawn();
