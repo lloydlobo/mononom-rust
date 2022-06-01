@@ -2,8 +2,8 @@ use std::f32::consts::PI;
 
 use crate::{
     components::{FromOpponent, Laser, Movable, Opponent, SpriteSize, Velocity},
-    GameTextures, OpponentCount, WinSize, OPPONENT_LASER_SIZE, OPPONENT_MAX, OPPONENT_SIZE,
-    SPRITE_SCALE,
+    GameTextures, OpponentCount, WinSize, BASE_SPEED, OPPONENT_LASER_SIZE, OPPONENT_MAX,
+    OPPONENT_SIZE, SPRITE_SCALE, TIME_STEP,
 };
 use bevy::{core::FixedTimestep, ecs::schedule::ShouldRun, prelude::*};
 use rand::{thread_rng, Rng};
@@ -23,7 +23,8 @@ impl Plugin for OpponentPlugin {
             SystemSet::new()
                 .with_run_criteria(opponent_fire_criteria)
                 .with_system(opponent_fire_system),
-        );
+        )
+        .add_system(opponent_movement_system); // won't use movable_system as we want an advanced control;
     }
 }
 
@@ -94,5 +95,13 @@ fn opponent_fire_system(
             .insert(FromOpponent)
             .insert(Movable { auto_despawn: true })
             .insert(Velocity { x: 0.0, y: -1.0 });
+    }
+}
+
+fn opponent_movement_system(mut query: Query<&mut Transform, With<Opponent>>) {
+    for mut transform in query.iter_mut() {
+        let translation = &mut transform.translation;
+        translation.x += BASE_SPEED * TIME_STEP / 4.0; // ->> SLOW MO
+        translation.y += BASE_SPEED * TIME_STEP / 4.0; // ->> SLOW MO
     }
 }

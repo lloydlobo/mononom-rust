@@ -36,8 +36,8 @@ const SPRITE_SCALE: f32 = 0.5;
 
 // region:      --- Game Constants
 
-const TIME_STEP: f32 = 1.0 / 60.0;
-const BASE_SPEED: f32 = 500.0;
+const TIME_STEP: f32 = 1.0 / 60.0; // seconds per frame? (60 fps)? (1.0 / 60.0)
+const BASE_SPEED: f32 = 500.0; // pixels per second
 
 const PLAYER_RESPAWN_DELAY: f64 = 2.0;
 const OPPONENT_MAX: u32 = 2;
