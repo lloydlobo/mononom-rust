@@ -139,7 +139,7 @@ fn movable_system(
                 || translation.x > win_size.w / 2.0 + MARGIN
                 || translation.x < -win_size.w / 2.0 - MARGIN
             {
-                println!("--> despawn, {entity:?}");
+                // println!("--> despawn, {entity:?}");
                 commands.entity(entity).despawn();
             }
         }
