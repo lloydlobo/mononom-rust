@@ -98,10 +98,60 @@ fn opponent_fire_system(
     }
 }
 
-fn opponent_movement_system(mut query: Query<&mut Transform, With<Opponent>>) {
+fn opponent_movement_system(time: Res<Time>, mut query: Query<&mut Transform, With<Opponent>>) {
+    let now = time.seconds_since_startup() as f32;
+
     for mut transform in query.iter_mut() {
+        /// # Current position
+        let (x_origin, y_origin) = (transform.translation.x, transform.translation.y); // current position
+
+        /// # max distance
+        let max_distance = TIME_STEP * BASE_SPEED; // distance in pixels per second
+
+        /// # Fixtures
+        // (hardcoded for now)
+        let dir: f32 = -1.0; // 1 for counter clockwise, -1 clockwise
+        let (x_pivot, y_pivot) = (0.0, 0.0); // pivot point
+        let (x_radius, y_radius) = (200.0, 130.0); // radius of circle
+
+        /// # Compute next angle (based on time for now)
+        let angle = dir * BASE_SPEED * TIME_STEP * now % 360.0 / PI; // in radians
+
+        /// # Compute next position target x/y
+        let x_destination = x_radius * angle.cos() + x_pivot;
+        let y_destination = y_radius * angle.sin() + y_pivot;
+
+        // println!("{:?}", (x_origin, y_origin, x_destination, y_destination));
+
+        /// # Compute next position / distance
+        let distance_x = x_origin - x_destination;
+        let distance_y = y_origin - y_destination;
+        let distance = (distance_x.powi(2) + distance_y.powi(2)).sqrt();
+        let distance_ratio = if distance != 0.0 {
+            max_distance / distance
+        } else {
+            0.0
+        };
+
+        /// # Compute final x/y position / target
+        let x = x_origin - distance_x * distance_ratio;
+        let x = if distance_x > 0.0 {
+            x.max(x_destination)
+        } else {
+            x.min(x_destination)
+        };
+        let y = y_origin - distance_y * distance_ratio;
+        let y = if distance_y > 0.0 {
+            y.max(y_destination)
+        } else {
+            y.min(y_destination)
+        };
+
+        /// # Update position
         let translation = &mut transform.translation;
-        translation.x += BASE_SPEED * TIME_STEP / 4.0; // ->> SLOW MO
-        translation.y += BASE_SPEED * TIME_STEP / 4.0; // ->> SLOW MO
+        (translation.x, translation.y) = (x, y);
+
+        // translation.x += BASE_SPEED * TIME_STEP / 4.0; // ->> SLOW MO
+        // translation.y += BASE_SPEED * TIME_STEP / 4.0; // ->> SLOW MO
     }
 }
