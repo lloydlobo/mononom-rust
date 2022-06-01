@@ -39,6 +39,8 @@ const SPRITE_SCALE: f32 = 0.5;
 const TIME_STEP: f32 = 1.0 / 60.0;
 const BASE_SPEED: f32 = 500.0;
 
+const OPPONENT_MAX: u32 = 2;
+
 // endregion:   --- Game Constants
 
 // region:      --- Resources
@@ -56,6 +58,7 @@ struct GameTextures {
 }
 
 // endregion:   --- Resources
+struct OpponentCount(u32);
 
 /// # Main Application
 fn main() {
@@ -114,6 +117,7 @@ fn setup_system(
         explosion,
     };
     commands.insert_resource(game_textures); // it's done only one time
+    commands.insert_resource(OpponentCount(0)); // what does the 0 mean? u32?
 }
 
 fn movable_system(
@@ -147,6 +151,7 @@ fn movable_system(
 
 fn player_laser_hit_opponent_system(
     mut commands: Commands,
+    mut opponent_count: ResMut<OpponentCount>,
     laser_query: Query<(Entity, &Transform, &SpriteSize), (With<Laser>, With<FromPlayer>)>,
     opponent_query: Query<(Entity, &Transform, &SpriteSize), With<Opponent>>,
 ) {
@@ -185,6 +190,7 @@ fn player_laser_hit_opponent_system(
                 // remove the opponent after collision
                 commands.entity(opponent_entity).despawn();
                 despawned_entities.insert(opponent_entity);
+                opponent_count.0 -= 1;
 
                 // remove the laser which hit the opponent right after collision
                 commands.entity(laser_entity).despawn();
