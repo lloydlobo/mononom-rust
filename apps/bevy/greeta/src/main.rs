@@ -41,6 +41,7 @@ const BASE_SPEED: f32 = 500.0; // pixels per second
 
 const PLAYER_RESPAWN_DELAY: f64 = 2.0;
 const OPPONENT_MAX: u32 = 2;
+const FORMATION_MEMBERS_MAX: u32 = 2;
 
 // endregion:   --- Game Constants
 
