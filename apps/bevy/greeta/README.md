@@ -14,3 +14,7 @@
 ### Bone
 
 <https://www.freepnglogos.com/pics/bone">
+
+### Pixel Humans
+
+<https://pixelfrog-assets.itch.io/pirate-bomb>

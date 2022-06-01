@@ -10,6 +10,8 @@ pub struct OpponentPlugin;
 impl Plugin for OpponentPlugin {
     fn build(&self, app: &mut App) {
         app.add_startup_system_to_stage(StartupStage::PostStartup, opponent_spawn_system);
+        // 1 opponent only
+        // app.add_system(opponent_spawn_system); // multiple opponents at once
     }
 }
 
@@ -30,7 +32,7 @@ fn opponent_spawn_system(
             texture: game_textures.opponent.clone(),
             transform: Transform {
                 translation: Vec3::new(x, y, 10.0),
-                scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.0),
+                scale: Vec3::new(SPRITE_SCALE * 2.0, SPRITE_SCALE * 2.0, 1.0),
                 ..Default::default()
             },
             ..Default::default()
