@@ -2767,6 +2767,7 @@ name = "render_2d"
 version = "0.1.0"
 dependencies = [
  "bevy",
+ "rand",
 ]
 
 [[package]]
