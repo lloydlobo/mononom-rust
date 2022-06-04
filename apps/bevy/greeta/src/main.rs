@@ -2,7 +2,7 @@
 // #![allow(unused)] // silence unused warnings while exploring (to comment out)
 
 use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
-pub(crate) use bevy::math::Vec3Swizzles;
+use bevy::math::Vec3Swizzles;
 use bevy::render::camera::RenderTarget;
 use bevy::{prelude::*, sprite::collide_aabb::collide, utils::HashSet};
 
@@ -66,6 +66,8 @@ struct GameTextures {
 // endregion:   --- Resources
 struct OpponentCount(u32);
 
+// region:      --- Player State
+
 /// Player State
 struct PlayerState {
     on: bool,       // alive
@@ -89,6 +91,8 @@ impl PlayerState {
         self.last_shot = -1.;
     }
 }
+
+// endregion:   --- Player State
 
 // region: bevy_inspector_egui::InspectorPlugin
 
@@ -336,11 +340,7 @@ fn explosion_animation_system(
     }
 }
 
-// #region:      --- ASSET_SERVER.LOAD()
-
-// By default the ROOT is the directory of the Application, but this can be overridden by setting the "CARGO_MANIFEST_DIR" environment variable (see https://doc.rust-lang.org/cargo/reference/environment-variables.html) to another directory. When the application is run through Cargo, then "CARGO_MANIFEST_DIR" is automatically set to the root folder of your crate (workspace)
-
-// endregion:   --- ASSET_SERVER.LOAD()
+// region:      --- Camera Cursor System
 
 /// Used to help identify our main camera
 #[derive(Component)]
@@ -384,3 +384,8 @@ fn my_cursor_system(
         eprintln!("World coords: {}/{}", world_pos.x, world_pos.y);
     }
 }
+// endregion:   --- Camera Cursor System
+
+// region:      --- ASSET_SERVER.LOAD()
+// By default the ROOT is the directory of the Application, but this can be overridden by setting the "CARGO_MANIFEST_DIR" environment variable (see https://doc.rust-lang.org/cargo/reference/environment-variables.html) to another directory. When the application is run through Cargo, then "CARGO_MANIFEST_DIR" is automatically set to the root folder of your crate (workspace)
+// endregion:   --- ASSET_SERVER.LOAD()
