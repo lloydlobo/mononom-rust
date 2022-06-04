@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "apps/bevy/render-2d",
     "apps/bevy/greeta",
     "apps/bevy/invaders",
     "libs/tdd/adder",

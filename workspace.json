@@ -6,6 +6,7 @@
     "greeta": "apps/bevy/greeta",
     "guessing_game": "apps/guessing-game",
     "invaders": "apps/bevy/invaders",
+    "render_2d": "apps/bevy/render-2d",
     "rust_lib": "libs/rust-lib"
   }
 }
