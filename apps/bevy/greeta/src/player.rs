@@ -92,7 +92,7 @@ fn player_fire_system(
                     .insert(FromPlayer)
                     .insert(SpriteSize::from(PLAYER_LASER_SIZE))
                     .insert(Movable { auto_despawn: true })
-                    .insert(Velocity { x: 0.0, y: 1.0 }); // similar to player movable system velocity but y is 1.0
+                    .insert(Velocity { x: 0.0, y: 6.0 }); // similar to player movable system velocity but y is 1.0
             };
 
             spawn_laser(x_offset);
