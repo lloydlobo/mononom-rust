@@ -1,7 +1,7 @@
 use crate::{
     components::{FromOpponent, Laser, Movable, Opponent, SpriteSize, Velocity},
-    GameTextures, OpponentCount, WinSize, BASE_SPEED, OPPONENT_LASER_SIZE, OPPONENT_MAX,
-    OPPONENT_SIZE, SPRITE_SCALE, TIME_STEP,
+    GameTextures, OpponentCount, WinSize, OPPONENT_LASER_SIZE, OPPONENT_MAX, OPPONENT_SIZE,
+    SPRITE_SCALE, TIME_STEP,
 };
 use bevy::{core::FixedTimestep, ecs::schedule::ShouldRun, prelude::*};
 use rand::{thread_rng, Rng};
@@ -108,21 +108,21 @@ fn opponent_fire_system(
 }
 
 fn opponent_movement_system(
-    time: Res<Time>,
+    // time: Res<Time>,
     mut query: Query<(&mut Transform, &mut Formation), With<Opponent>>,
 ) {
     // need mutable formation system to change the angle at some point
-    let now = time.seconds_since_startup() as f32;
+    // let now = time.seconds_since_startup() as f32;
 
     for (mut transform, mut formation) in query.iter_mut() {
-        /// # Current position
+        // Current position
         let (x_origin, y_origin) = (transform.translation.x, transform.translation.y); // current position
 
-        /// # max distance
+        // max distance
         let max_distance = TIME_STEP * formation.speed; // distance in pixels per second
                                                         // let max_distance = TIME_STEP * BASE_SPEED; // distance in pixels per second
 
-        /// # Fixtures
+        // Fixtures
         let dir: f32 = if formation.start.0 < 0.0 { 1.0 } else { -1.0 }; // 1 for counter clockwise, -1 clockwise
                                                                          // let dir: f32 = -1.0; // 1 for counter clockwise, -1 clockwise
                                                                          // let (x_pivot, y_pivot) = (0.0, 0.0); // pivot point
@@ -130,18 +130,18 @@ fn opponent_movement_system(
         let (x_pivot, y_pivot) = formation.pivot; // pivot point
         let (x_radius, y_radius) = formation.radius; // radius of circle
 
-        /// # Compute next angle (based on time for now)
+        // Compute next angle (based on time for now)
         let angle = formation.angle
             + dir * formation.speed * TIME_STEP / (x_radius.min(y_radius) * PI / 2.0); // in radians
                                                                                        // let angle = dir * BASE_SPEED * TIME_STEP * now % 360.0 / PI; // in radians
 
-        /// # Compute next position target x/y
+        // Compute next position target x/y
         let x_destination = x_radius * angle.cos() + x_pivot;
         let y_destination = y_radius * angle.sin() + y_pivot;
 
         // println!("{:?}", (x_origin, y_origin, x_destination, y_destination));
 
-        /// # Compute next position / distance
+        //  Compute next position / distance
         let distance_x = x_origin - x_destination;
         let distance_y = y_origin - y_destination;
         let distance = (distance_x.powi(2) + distance_y.powi(2)).sqrt();
@@ -151,7 +151,7 @@ fn opponent_movement_system(
             0.0
         };
 
-        /// # Compute final x/y position / target
+        // Compute final x/y position / target
         let x = x_origin - distance_x * distance_ratio;
         let x = if distance_x > 0.0 {
             x.max(x_destination)
@@ -170,7 +170,7 @@ fn opponent_movement_system(
         if distance < max_distance * formation.speed / 2.0 {
             formation.angle = angle;
         }
-        /// # Update position
+        // Update position
         let translation = &mut transform.translation;
         (translation.x, translation.y) = (x, y);
 

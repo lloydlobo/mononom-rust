@@ -1,12 +1,15 @@
 // `cargo run --release --features bevy/dynamic`
-#![allow(unused)] // silence unused warnings while exploring (to comment out)
+// #![allow(unused)] // silence unused warnings while exploring (to comment out)
 
 pub(crate) use bevy::math::Vec3Swizzles;
 use bevy::{prelude::*, sprite::collide_aabb::collide, utils::HashSet};
+// use bevy_inspector_egui::{Inspectable, InspectorPlugin};
+
 use components::{
     Explosion, ExplosionTimer, ExplosionToSpawn, FromOpponent, FromPlayer, Laser, Movable,
     Opponent, Player, SpriteSize, Velocity,
 };
+
 use opponent::OpponentPlugin;
 use player::{player_restrict_win_edges, PlayerPlugin};
 
@@ -63,10 +66,6 @@ struct GameTextures {
 struct OpponentCount(u32);
 
 /// Player State
-/// # Description
-/// This is the state of the player.
-/// # Notes
-/// This is a simple enum that is used to track the state of the player.
 struct PlayerState {
     on: bool,       // alive
     last_shot: f64, // -1 if not shot / hit
@@ -90,6 +89,18 @@ impl PlayerState {
     }
 }
 
+// region: bevy_inspector_egui::InspectorPlugin
+
+// #[derive(Inspectable, Default)]
+// struct Data {
+//     should_render: bool,
+//     text: String,
+//     #[inspectable(min = 42.0, max = 100.0)]
+//     size: f32,
+// }
+
+// endregion: bevy_inspector_egui::InspectorPlugin
+
 /// # Main Application
 fn main() {
     App::new()
@@ -109,6 +120,8 @@ fn main() {
         .add_system(opponent_laser_hit_player_system)
         .add_system(explosion_to_spawn_system)
         .add_system(explosion_animation_system)
+        // .add_plugin(InspectorPlugin::<Data>::new())
+        // .add_plugin(WorldInspectorPlugin::new())
         .add_system(bevy::input::system::exit_on_esc_system)
         .run();
 }
@@ -212,8 +225,8 @@ fn player_laser_hit_opponent_system(
             let collision = collide(
                 laser_transform.translation, // laser position
                 laser_size.0 * laser_scale,
-                opponent_transform.translation, // laser position
-                opponent_size.0 * laser_scale,  // why is this laser_scale? and not opponent_scale?
+                opponent_transform.translation,   // laser position
+                opponent_size.0 * opponent_scale, // why is this laser_scale? and not opponent_scale?
             );
 
             // perform collision logic

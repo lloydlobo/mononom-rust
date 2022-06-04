@@ -1,10 +1,10 @@
 use crate::components::{FromPlayer, Laser, Movable, Player, SpriteSize, Velocity};
 use crate::{
-    GameTextures, PlayerState, WinSize, BASE_SPEED, PLAYER_LASER_SIZE, PLAYER_RESPAWN_DELAY,
-    PLAYER_SIZE, SPRITE_SCALE, TIME_STEP,
+    GameTextures, PlayerState, WinSize, PLAYER_LASER_SIZE, PLAYER_RESPAWN_DELAY, PLAYER_SIZE,
+    SPRITE_SCALE,
 };
 use bevy::core::FixedTimestep;
-use bevy::{prelude::*, window};
+use bevy::prelude::*;
 // use bevy::render::texture;
 
 pub struct PlayerPlugin;
