@@ -1,9 +1,10 @@
 // `cargo run --release --features bevy/dynamic`
 // #![allow(unused)] // silence unused warnings while exploring (to comment out)
 
+use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 pub(crate) use bevy::math::Vec3Swizzles;
+use bevy::render::camera::RenderTarget;
 use bevy::{prelude::*, sprite::collide_aabb::collide, utils::HashSet};
-// use bevy_inspector_egui::{Inspectable, InspectorPlugin};
 
 use components::{
     Explosion, ExplosionTimer, ExplosionToSpawn, FromOpponent, FromPlayer, Laser, Movable,
@@ -104,7 +105,7 @@ impl PlayerState {
 /// # Main Application
 fn main() {
     App::new()
-        .insert_resource(ClearColor(Color::rgb(0.04, 0.04, 0.04)))
+        .insert_resource(ClearColor(Color::hsl(5.0, 0.80, 0.75)))
         .insert_resource(WindowDescriptor {
             title: "Greeta Plays".to_string(),
             width: 509.0,
@@ -112,6 +113,10 @@ fn main() {
             ..Default::default()
         })
         .add_plugins(DefaultPlugins)
+        .add_plugin(LogDiagnosticsPlugin::default())
+        .add_plugin(FrameTimeDiagnosticsPlugin::default())
+        .add_system(my_cursor_system)
+        .add_system(bevy::input::system::exit_on_esc_system)
         .add_plugin(PlayerPlugin)
         .add_plugin(OpponentPlugin)
         .add_startup_system(setup_system)
@@ -120,9 +125,7 @@ fn main() {
         .add_system(opponent_laser_hit_player_system)
         .add_system(explosion_to_spawn_system)
         .add_system(explosion_animation_system)
-        // .add_plugin(InspectorPlugin::<Data>::new())
         // .add_plugin(WorldInspectorPlugin::new())
-        .add_system(bevy::input::system::exit_on_esc_system)
         .run();
 }
 
@@ -135,7 +138,9 @@ fn setup_system(
     mut windows: ResMut<Windows>,
 ) {
     // set camera first
-    commands.spawn_bundle(OrthographicCameraBundle::new_2d());
+    commands
+        .spawn_bundle(OrthographicCameraBundle::new_2d())
+        .insert(MainCamera);
 
     // set windows
     let window = windows.get_primary_mut().unwrap(); // unwrap causes panic so use matching
@@ -336,3 +341,46 @@ fn explosion_animation_system(
 // By default the ROOT is the directory of the Application, but this can be overridden by setting the "CARGO_MANIFEST_DIR" environment variable (see https://doc.rust-lang.org/cargo/reference/environment-variables.html) to another directory. When the application is run through Cargo, then "CARGO_MANIFEST_DIR" is automatically set to the root folder of your crate (workspace)
 
 // endregion:   --- ASSET_SERVER.LOAD()
+
+/// Used to help identify our main camera
+#[derive(Component)]
+struct MainCamera;
+
+// https://bevy-cheatbook.github.io/cookbook/cursor2world.html
+fn my_cursor_system(
+    // need to get window dimensions
+    wnds: Res<Windows>,
+    // query to get camera transform
+    q_camera: Query<(&Camera, &GlobalTransform), With<MainCamera>>,
+) {
+    // get the camera info and transform
+    // assuming there is exactly one main camera entity, so query::single() is OK
+    let (camera, camera_transform) = q_camera.single();
+
+    // get the window that the camera is displaying to (or the primary window)
+    let wnd = if let RenderTarget::Window(id) = camera.target {
+        wnds.get(id).unwrap()
+    } else {
+        wnds.get_primary().unwrap()
+    };
+
+    // check if the cursor is inside the window and get its position
+    if let Some(screen_pos) = wnd.cursor_position() {
+        // get the size of the window
+        let window_size = Vec2::new(wnd.width() as f32, wnd.height() as f32);
+
+        // convert screen position [0..resolution] to ndc [-1..1] (gpu coordinates)
+        let ndc = (screen_pos / window_size) * 2.0 - Vec2::ONE;
+
+        // matrix for undoing the projection and camera transform
+        let ndc_to_world = camera_transform.compute_matrix() * camera.projection_matrix.inverse();
+
+        // use it to convert ndc to world-space coordinates
+        let world_pos = ndc_to_world.project_point3(ndc.extend(-1.0));
+
+        // reduce it to a 2D value
+        let world_pos: Vec2 = world_pos.truncate();
+
+        eprintln!("World coords: {}/{}", world_pos.x, world_pos.y);
+    }
+}
