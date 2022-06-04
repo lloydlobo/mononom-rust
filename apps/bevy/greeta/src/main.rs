@@ -109,6 +109,7 @@ fn main() {
         .add_system(opponent_laser_hit_player_system)
         .add_system(explosion_to_spawn_system)
         .add_system(explosion_animation_system)
+        .add_system(bevy::input::system::exit_on_esc_system)
         .run();
 }
 
@@ -128,7 +129,7 @@ fn setup_system(
     let (win_w, win_h) = (window.width(), window.height());
 
     // position window for now
-    window.set_position(IVec2::new(760, 200));
+    // window.set_position(IVec2::new(760, 200));
 
     // add WinSize resource
     let win_size = WinSize { w: win_w, h: win_h };
@@ -186,7 +187,6 @@ fn player_laser_hit_opponent_system(
     laser_query: Query<(Entity, &Transform, &SpriteSize), (With<Laser>, With<FromPlayer>)>,
     opponent_query: Query<(Entity, &Transform, &SpriteSize), With<Opponent>>,
 ) {
-    // WARN bevy_ecs::system::commands: Could not despawn entity 66450v1 because it doesn't exist in this World. // If this command was added to a newly spawned entity, ensure that you have not despawned that entity within the same stage. // This may have occurred due to system order ambiguity, or if the spawning system has multiple command buffers
     // Book keeping or caching despawned entities is not recommended?
     let mut despawned_entities: HashSet<Entity> = HashSet::new();
 
