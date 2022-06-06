@@ -10,7 +10,29 @@ fn main() {
     tuples_system();
     arrays_system();
     expressions_and_statements_system();
+    functions_system();
 }
+
+// region:      --- functions_system
+
+fn functions_system() {
+    println!("\n\nregion:      --- functions_system");
+    let x = five();
+    println!("The value of x is: {}", x);
+
+    let x = plus_one(five());
+    println!("The value of x -> plus_one(five()) is: {}", x); // 6
+}
+
+fn five() -> i32 {
+    5
+}
+
+fn plus_one(x: i32) -> i32 {
+    x + 1 // no ; because it's an expression
+}
+
+// endregion:  --- functions_system
 
 // region:      --- expressions_and_statements
 
