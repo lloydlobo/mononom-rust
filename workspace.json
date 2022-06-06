@@ -3,6 +3,7 @@
   "version": 2,
   "projects": {
     "adder": "libs/tdd/adder",
+    "basics": "apps/rust/basics",
     "greeta": "apps/bevy/greeta",
     "guessing_game": "apps/guessing-game",
     "invaders": "apps/bevy/invaders",
