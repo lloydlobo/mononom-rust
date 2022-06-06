@@ -1,7 +1,7 @@
 fn main() {
     println!("Hello, world!");
 
-    print_ln_system();
+    println_system();
     mut_system();
     shadow_variables_system();
     constants_system();
@@ -9,7 +9,30 @@ fn main() {
     strings_system();
     tuples_system();
     arrays_system();
+    expressions_and_statements_system();
 }
+
+// region:      --- expressions_and_statements
+
+#[allow(unused_variables)]
+#[allow(unused_parens)]
+fn expressions_and_statements_system() {
+    println!("\n\nregion:      --- expressions_and_statements");
+
+    let a = 3 + 7;
+    let b = (3 + 7); // ; marks end of statement, while (3 + 7) is expression
+    let c = { 3 + 7 };
+
+    let y = {
+        let mut x = 3;
+        x = x * 2;
+        // there is no ";" a it is an expression
+        x + 1
+    }; // end of statement // you can do calculations in braces
+    println!("The value of y is: {}", y); // prints: The value of y is: 7
+}
+
+// endregion:   --- expressions_and_statements
 
 // region:      --- arrays_system
 
@@ -89,6 +112,7 @@ fn strings_system() {
     println!("String: {}", hello); // String: Hello,world!
 }
 // endregion:   --- strings_system
+
 // region:      --- types_system
 
 fn types_system() {
@@ -130,6 +154,7 @@ fn constants_system() {
 }
 
 // endregion:   --- constants_system
+
 // region:      --- shadow_variables_system
 
 fn shadow_variables_system() {
@@ -159,10 +184,12 @@ fn mut_system() {
     println!("The value of x is: {}", x);
 }
 
-// region:      --- mut
+// endregion:   --- mut
 
-fn print_ln_system() {
-    println!("\n\nregion: print_ln_system()\n");
+// region:      --- println_system
+
+fn println_system() {
+    println!("\n\nregion: println_system()\n");
     let x = 7;
     let y = 1;
 
@@ -179,7 +206,7 @@ fn print_ln_system() {
     println!("y is {1}, x is {0}", y, x);
 }
 
-// endregion:   --- println!
+// endregion:   --- println_system
 
 /* REFERENCE
  ___ ___ ___ ___ ___ ___ _  _  ___ ___
