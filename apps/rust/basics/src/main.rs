@@ -11,10 +11,44 @@ fn main() {
     arrays_system();
     expressions_and_statements_system();
     functions_system();
+    loop_while_system();
+    for_loops_system();
 }
 
+fn for_loops_system() {
+    println!("\n\nregion:      --- for_loops_system");
+}
+
+// region:      --- loop_while_system
+
+fn loop_while_system() {
+    println!("\n\nregion:      --- loop_while_system");
+
+    // loops
+    let mut counter = 0;
+    let result_loop_times2 = loop {
+        counter += 1;
+        if counter == 10 {
+            break counter * 2;
+        }
+    };
+    println!(
+        "The result of loop of counter = {} times 2 is: {}",
+        counter, result_loop_times2
+    ); // counter = 10 times 2 is: 20
+
+    // while loops
+    counter = 3;
+    while counter != 0 {
+        println!("counter is: {}", counter);
+        counter -= 1;
+    }
+}
+
+// endregion:   --- loop_while_system
+
 // region:      --- functions_system
-// #[allow(unused_variables)]
+
 fn functions_system() {
     println!("\n\nregion:      --- functions_system");
 
@@ -36,7 +70,7 @@ fn functions_system() {
     ); // (65790.0, 4294967295.0)
 
     let factorial_number: u64 = 5;
-    let get_factorial = factorial(factorial_number);
+    let get_factorial: u64 = factorial(factorial_number);
     println!(
         "The factorial of {} is: {}",
         factorial_number, get_factorial
