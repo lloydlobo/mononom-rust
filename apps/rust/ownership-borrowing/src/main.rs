@@ -14,6 +14,7 @@ fn errors_system() {
         let string_2 = string_1.clone(); // this is cloning, string_1 is copied to string_2
         println!("string_1 = {}, string_2 = {}", string_1, string_2); // string_1 = hello, string_2 = hello (after using .clone())
     }
+
     borrowing_from_strings();
     /*
         error[E0382]: borrow of moved value: `string_1`
@@ -38,8 +39,7 @@ fn errors_system() {
  / , _/ _// _// _// , _/ _//    / /__/ _/
 /_/|_/___/_/ /___/_/|_/___/_/|_/\___/___/
 
-Rust: What is Ownership and Borrowing?
-
+title: Rust: What is Ownership and Borrowing?
 author: Gary Explains
 source: https://www.youtube.com/watch?v=79phqVpE7cU
 
