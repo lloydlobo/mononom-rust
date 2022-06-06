@@ -4,11 +4,42 @@ fn main() {
     print_ln_system();
     mut_system();
     shadow_variables_system();
+    constants_system();
 }
+
+// region:      --- constants_system
+
+fn constants_system() {
+    println!("\n\nregion: constants_system");
+
+    // const are not the same as immutable --> they are immutable by default
+    // when using 'const' keyword, type must be annotated explicitly
+    // constants may only be set to expressions
+    // Always use UPPERCASE for constants
+    const FHD_WIDTH: u32 = 1920;
+    const APPROX_PI: f32 = 22.0 / 7.0;
+    println!("FHD_WIDTH: {}, APPROX_PI: {}", FHD_WIDTH, APPROX_PI); // FHD_WIDTH: 1920, APPROX_PI: 3.142857
+}
+
+// endregion:   --- constants_system
+// region:      --- shadow_variables_system
 
 fn shadow_variables_system() {
     print!("\n\nregion: shadow_variables_system\n\n");
+    // shadow
+    let y: i32 = 5;
+    let y = y + 1;
+    let y = y + 2;
+    println!("The value of y is: {}", y); // 8
+
+    // shadow and change type --> advantage of changing types
+    let abc: &str = "ABC";
+    let abc: usize = abc.len(); // len is in bytes? --> The pointer-sized unsigned integer type.
+                                // The size of this primitive is how many bytes it takes to reference any location in memory. For example, on a 32 bit target, this is 4 bytes and on a 64 bit target, this is 8 bytes.
+    println!("The value of abc is: {}", abc) // 3
 }
+
+// endregion:   --- shadow_variables_system
 
 // region:      --- mut
 
