@@ -7,17 +7,38 @@ fn main() {
     constants_system();
     types_system();
     strings_system();
+    tuples_system();
 }
 
+// region:      --- tuples_system
+fn tuples_system() {
+    println!("\n\nregion:      --- tuples_system");
+    // tuples (can have different types, fixed length)
+    let tup: (i32, f64, u8, f32) = (500, 6.4, 1, 29.29);
+    let tup2 = (1500, 3.4); // did not give type as compiler infers it
+    println!("tup and tup2: {:?} {:?}", tup, tup2); // tup and tup2: (500, 6.4, 1, 29.29) (1500, 3.4)
+
+    let (w, x, y, z) = tup;
+    println!("w,x,y,z are: {} {} {} {}", w, x, y, z); // w,x,y,z are: 500 6.4 1 29.29 --> no need for brackets like debug, just individual variables
+    let five_hundred = tup.0;
+    let three_point_four = tup2.1;
+    let one = tup.2;
+    let twonine_29 = tup.3;
+    println!(
+        "From the tuples: {} {} {} {}",
+        five_hundred, three_point_four, one, twonine_29
+    ); // From the tuples: 500 3.4 1 29.29
+}
+
+// endregion:   --- tuples_system
 // region:      --- strings_system
 
 fn strings_system() {
     println!("\n\nregion:      --- strings_system");
     // All strings in rust are UTF-8 encoded., so -->
     // str - static string literal
-    let howdy = "Howdy🖐"; // 6 long?
-    println!("Some str stuff: {} {}", howdy.len(), howdy.is_empty(),); // Some str stuff: 9 false -->
-                                                                       //Returns true if self has a length of zero bytes.
+    let howdy = "Howdy🖐"; // 6 long? --> no, 4 bytes for emoji --> 5 + 4 = 9 bytes
+    println!("Some str stuff: {} {}", howdy.len(), howdy.is_empty(),); // 9 false --> //Returns true if self has a length of zero bytes.
     println!("The bytes of howdy: {:?}", howdy.as_bytes()); // The bytes of howdy: [72, 111, 119, 100, 121, 240, 159, 150, 144]
 
     // strings
