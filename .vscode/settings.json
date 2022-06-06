@@ -11,7 +11,11 @@
         "nxrs",
         "powi",
         "RESPAWN",
+        "rodio",
         "rustc",
-        "Timestep"
+        "Timestep",
+        "Wavetable",
+        "wavetables",
+        "Wilczek"
     ]
 }
