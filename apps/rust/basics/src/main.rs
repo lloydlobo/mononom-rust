@@ -5,7 +5,57 @@ fn main() {
     mut_system();
     shadow_variables_system();
     constants_system();
+    types_system();
+    strings_system();
 }
+
+// region:      --- strings_system
+
+fn strings_system() {
+    println!("\n\nregion:      --- strings_system");
+    // All strings in rust are UTF-8 encoded., so -->
+    // str - static string literal
+    let howdy = "Howdy🖐"; // 6 long?
+    println!("Some str stuff: {} {}", howdy.len(), howdy.is_empty(),); // Some str stuff: 9 false -->
+                                                                       //Returns true if self has a length of zero bytes.
+    println!("The bytes of howdy: {:?}", howdy.as_bytes()); // The bytes of howdy: [72, 111, 119, 100, 121, 240, 159, 150, 144]
+
+    // strings
+    let mut hello = String::from("Hello"); // string from a str
+
+    hello.push('w'); // push a char literal --> use single quotes
+    hello.push_str("orld!"); // push a str literal --> use double quotes
+    println!("String: {}", hello); // String: Helloworld!
+
+    hello.insert(5, ','); // insert a char at a given index
+    println!("String: {}", hello); // String: Hello,world!
+}
+// endregion:   --- strings_system
+// region:      --- types_system
+
+fn types_system() {
+    println!("\n\nregion:      --- types_system");
+    // signed integers: i8, i16, i32, i64, isize
+    // unsigned integers: u8, u16, u32, u64, usize
+    let x128: u128 = 0xFAFBFCFD_FEF1F2F3_F4F5F6F7_F8F9FAFB;
+    let x64: i64 = 123456;
+    // 32 bit & 64 bit floating point numbers: f32, f64
+    let x = 2.0; // f64 is the default
+    let y: f32 = 3.0;
+    println!(
+        "The value of x128, x64, x, y is: {} {} {} {}",
+        x128, x64, x, y
+    ); // The value of x128, x64, x, y is: 333615396748568137220584888834868247291 123456 2 3
+
+    // characters and booleans: char, bool
+    let c = "z";
+    let z = "Z";
+    let hand = "🖐";
+    let job_done = false;
+    println!("Some chars: {} {} {} {}", c, z, hand, job_done); // Some chars: z Z 🖐 false
+}
+
+// endregion:   --- types_system
 
 // region:      --- constants_system
 
