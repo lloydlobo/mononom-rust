@@ -2526,6 +2526,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "ownership_borrowing"
+version = "0.1.0"
+
+[[package]]
 name = "parking"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
