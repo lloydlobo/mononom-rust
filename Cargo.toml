@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "apps/_audio/synthesis-wavetable",
     "apps/rust/ownership-borrowing",
     "apps/rust/basics",
     "apps/bevy/render-2d",

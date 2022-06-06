@@ -9,6 +9,7 @@
     "invaders": "apps/bevy/invaders",
     "ownership_borrowing": "apps/rust/ownership-borrowing",
     "render_2d": "apps/bevy/render-2d",
-    "rust_lib": "libs/rust-lib"
+    "rust_lib": "libs/rust-lib",
+    "synthesis_wavetable": "apps/_audio/synthesis-wavetable"
   }
 }
