@@ -8,11 +8,46 @@ fn main() {
     types_system();
     strings_system();
     tuples_system();
+    arrays_system();
 }
 
+// region:      --- arrays_system
+
+fn arrays_system() {
+    println!("\n\nregion:      --- arrays_system");
+
+    // arrays (all must be of same type, fixed length)
+    let a = [1, 2, 3, 4, 5];
+    let b: [u16; 5] = [1, 2, 3, 4, 5];
+    let c = [0; 5]; // want array 5 long and all to be zero 0
+    println!("a b c: {:?} {:?} {:?}", a, b, c); // a b c: [1, 2, 3, 4, 5] [1, 2, 3, 4, 5] [0, 0, 0, 0, 0]
+
+    let months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+    let first = a[0]; // 1
+    let nov = months[10];
+    println!("Two elements of the arrays: {} {}", first, nov); // 1 November
+}
+
+// endregion:   --- arrays_system
+
 // region:      --- tuples_system
+
 fn tuples_system() {
     println!("\n\nregion:      --- tuples_system");
+
     // tuples (can have different types, fixed length)
     let tup: (i32, f64, u8, f32) = (500, 6.4, 1, 29.29);
     let tup2 = (1500, 3.4); // did not give type as compiler infers it
@@ -20,6 +55,7 @@ fn tuples_system() {
 
     let (w, x, y, z) = tup;
     println!("w,x,y,z are: {} {} {} {}", w, x, y, z); // w,x,y,z are: 500 6.4 1 29.29 --> no need for brackets like debug, just individual variables
+
     let five_hundred = tup.0;
     let three_point_four = tup2.1;
     let one = tup.2;
@@ -31,6 +67,7 @@ fn tuples_system() {
 }
 
 // endregion:   --- tuples_system
+
 // region:      --- strings_system
 
 fn strings_system() {
