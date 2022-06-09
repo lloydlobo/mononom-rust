@@ -4,6 +4,7 @@
   "projects": {
     "adder": "libs/tdd/adder",
     "basics": "apps/rust/basics",
+    "easy": "apps/leetcode/easy",
     "greeta": "apps/bevy/greeta",
     "guessing_game": "apps/guessing-game",
     "invaders": "apps/bevy/invaders",
