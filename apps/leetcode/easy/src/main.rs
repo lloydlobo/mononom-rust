@@ -9,10 +9,14 @@ mod random_vector;
 fn main() {
     let graph = create_input_vec();
     let result = find_center(graph);
-    println!("{:?}", result);
-
-    let random_vector = random_duplicate_vector(5); // [[1, 1], [1], [2, 3], [3], [4, 4], [4], [4, 5], [5], [2, 1], [1]]
-    println!("{:?}", random_vector)
+    println!("find_center of graph: {:?}", result);
+    let random_vector = random_duplicate_vector(5);
+    println!("random_vector: {:?}", random_vector);
+    let random_vector_star_center = find_center(random_vector); // doesn't work as it's not a star graph
+    println!(
+        "find_center of random_vector: {:?}",
+        random_vector_star_center
+    );
 }
 
 // region:      --- graph_star ---
