@@ -10,9 +10,12 @@ fn main() {
     let graph = create_input_vec();
     let result = find_center(graph);
     println!("find_center of graph: {:?}", result);
-    let random_vector = random_duplicate_vector(5);
+    let mut random_vector = random_duplicate_vector(5);
     println!("random_vector: {:?}", random_vector);
-    let random_vector_star_center = find_center(random_vector); // doesn't work as it's not a star graph
+    // pop the first element
+    random_vector.pop();
+    println!("random_vector.pop(): {:?}", random_vector);
+    let random_vector_star_center = find_center(random_vector); // doesn't work as it's not a star graph // update: n < n - 1 --> pop an element
     println!(
         "find_center of random_vector: {:?}",
         random_vector_star_center
