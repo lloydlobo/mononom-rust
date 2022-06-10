@@ -45,6 +45,14 @@ fn main_nearest_valid_point() {
     println!("points: {:?}", points);
     let nearest_point = nearest_valid_point(x, y, points);
     println!("\n0 -> nearest_point is: {}", nearest_point);
+
+    x = 3;
+    y = 4;
+    println!("\n\nx: {}, y: {}", x, y);
+    points = vec![vec![2, 3]];
+    println!("points: {:?}", points);
+    let nearest_point = nearest_valid_point(x, y, points);
+    println!("\n-1 -> nearest_point is: {}", nearest_point);
 }
 
 #[cfg(test)]
