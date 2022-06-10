@@ -1,3 +1,5 @@
+use sums::two_sum;
+
 use crate::{
     graph_star::{create_input_vec, find_center},
     nearest_valid_point::nearest_valid_point,
@@ -6,22 +8,17 @@ use crate::{
 mod graph_star;
 pub mod nearest_valid_point;
 mod random_vector;
+pub mod sums;
 
 // region:      --- main ---
 
 fn main() {
-    main_nearest_valid_point();
-
-    // let x = 3;
-    // let y = 4;
-    // let points = vec![vec![1, 2], vec![3, 1], vec![2, 4], vec![2, 3], vec![4, 4]];
-    // let points_array = points.clone();
-    // let len = points_array.len();
-    // for i in 0..len {
-    //     let point: Vec<i32> = points_array[i].clone();
-    //     let manhattan_distance = (x - point[0]).abs() + (y - point[1]).abs();
-    //     println!("manhattan_distance: {}", manhattan_distance);
-    // }
+    // cspell:disable
+    let nums = vec![2, 7, 11, 15];
+    let target = 9;
+    let output_two_sum = two_sum(nums, target);
+    println!("output_two_sum: {:?}", output_two_sum);
+    // cspell:enable
 }
 
 // endregion:    --- main ---
