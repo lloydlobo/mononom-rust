@@ -1,29 +1,33 @@
 use crate::{
     graph_star::{create_input_vec, find_center},
+    nearest_valid_point::nearest_valid_point,
     random_vector::random_duplicate_vector,
 };
-
 mod graph_star;
+pub mod nearest_valid_point;
 mod random_vector;
 
 // region:      --- main ---
 
 fn main() {
-    let graph = create_input_vec();
-    let result = find_center(graph);
-
-    let mut random_vector = random_duplicate_vector(100);
-    random_vector.pop(); // pop the first element
-    let random_vector_star_center = find_center(random_vector); // doesn't work as it's not a star graph // update: n < n - 1 --> pop an element
-
-    println!("find_center of graph: {:?}", result);
-    println!(
-        "find_center of random_vector.pop(): {:?}",
-        random_vector_star_center
-    );
+    main_nearest_valid_point();
 }
 
 // endregion:    --- main ---
+
+fn main_nearest_valid_point() {
+    println!("Hello, world!");
+    let mut x = 3;
+    let mut y = 4;
+    let mut points = vec![vec![1, 2], vec![3, 1], vec![2, 4], vec![2, 3], vec![4, 4]];
+    let nearest_point = nearest_valid_point(x, y, points);
+    println!("nearest_point is: {}", nearest_point);
+    x = 2;
+    y = 2;
+    points = vec![vec![1, 2], vec![3, 1], vec![2, 4], vec![2, 3], vec![4, 4]];
+    let nearest_point = nearest_valid_point(x, y, points);
+    println!("nearest_point is: {}", nearest_point);
+}
 
 #[cfg(test)]
 mod tests {
@@ -78,5 +82,21 @@ Details
 Runtime: 22 ms, faster than 66.67% of Rust online submissions for Find Center of Star Graph.
 Memory Usage: 9 MB, less than 20.83% of Rust online submissions for Find Center of Star Graph.
 */
+
+#[allow(dead_code)]
+fn main_find_center() {
+    let graph = create_input_vec();
+    let result = find_center(graph);
+
+    let mut random_vector = random_duplicate_vector(100);
+    random_vector.pop(); // pop the first element
+    let random_vector_star_center = find_center(random_vector); // doesn't work as it's not a star graph // update: n < n - 1 --> pop an element
+
+    println!("find_center of graph: {:?}", result);
+    println!(
+        "find_center of random_vector.pop(): {:?}",
+        random_vector_star_center
+    );
+}
 
 // endregion:    --- graph_star ---
