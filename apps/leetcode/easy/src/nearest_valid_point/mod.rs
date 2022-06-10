@@ -17,54 +17,45 @@
 /// - x: 3, y: 4
 /// - points: [[1, 2], [3, 1], [2, 4], [2, 3], [4, 4]]
 /// - 2 -> nearest_point is: 2
-/// # Performance Details
+
 /// - Runtime: 30 ms, faster than 13.73% of Rust online submissions for Find Nearest Point That Has the Same X or Y Coordinate.
 /// - Memory Usage: 3.7 MB, less than 15.69% of Rust online submissions for Find Nearest Point That Has the Same X or Y Coordinate.
+// pub fn nearest_valid_point(x: i32, y: i32, points: Vec<Vec<i32>>) -> i32 {
+//     let points_array = points.clone();
+//     let n = points_array.len();
+//     let mut min_distance = std::i32::MAX;
+//     let mut nearest_point = -1 as i32;
+//     for i in 0..n {
+//         let point: Vec<i32> = points_array[i].clone();
+//         if x == point[0] || y == point[1] {
+//             let manhattan_distance = (x - point[0]).abs() + (y - point[1]).abs();
+//             if manhattan_distance < min_distance {
+//                 min_distance = manhattan_distance;
+//                 nearest_point = i as i32;
+//             }
+//         }
+//     }
+//     nearest_point as i32
+// }
+
+/// Runtime: 27 ms, faster than 31.37% of Rust online submissions for Find Nearest Point That Has the Same X or Y Coordinate.
+/// Memory Usage: 2.8 MB, less than 84.31% of Rust online submissions for Find Nearest Point That Has the Same X or Y Coordinate.
 pub fn nearest_valid_point(x: i32, y: i32, points: Vec<Vec<i32>>) -> i32 {
-    let points_array = points.clone();
-    let n = points_array.len();
-    let mut min_distance = std::i32::MAX;
-    let mut nearest_point = -1 as i32;
+    let n = points.len();
+    let mut min = std::i32::MAX;
+    let mut loc = -1;
     for i in 0..n {
-        let point: Vec<i32> = points_array[i].clone();
+        let point = points[i].clone();
         if x == point[0] || y == point[1] {
-            let manhattan_distance = (x - point[0]).abs() + (y - point[1]).abs();
-            if manhattan_distance < min_distance {
-                min_distance = manhattan_distance;
-                nearest_point = i as i32;
+            let dist = (x - point[0]).abs() + (y - point[1]).abs();
+            if dist < min {
+                min = dist;
+                loc = i as i32;
             }
         }
     }
-    nearest_point as i32
+    loc
 }
-
-// let mut index = -1;
-// let max = std::i32::MAX; // 2147483647
-
-// let mut max_distance = max;
-
-// for i in 0..n {
-//     let p = points_array[i].clone();
-//     let point = p;
-
-//     if point[0] == x && point[1] == y {
-//         let x_distance = (x - point[0]).abs();
-//         let y_distance = (y - point[1]).abs();
-//         let manhattan_distance = x_distance + y_distance;
-//         // let manhattan_distance: i32 = (x - point[0]).abs() + (y - point[1]).abs();
-
-//         if manhattan_distance < max_distance {
-//             index = i;
-//             max_distance = manhattan_distance;
-//         }
-//     }
-// }
-// return index;
-// }
-// if max_distance == std::i32::MAX {
-//     return -1;
-// } else {
-//     return index;
 
 #[cfg(test)]
 mod tests {
