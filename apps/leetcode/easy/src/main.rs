@@ -11,23 +11,40 @@ mod random_vector;
 
 fn main() {
     main_nearest_valid_point();
+
+    // let x = 3;
+    // let y = 4;
+    // let points = vec![vec![1, 2], vec![3, 1], vec![2, 4], vec![2, 3], vec![4, 4]];
+    // let points_array = points.clone();
+    // let len = points_array.len();
+    // for i in 0..len {
+    //     let point: Vec<i32> = points_array[i].clone();
+    //     let manhattan_distance = (x - point[0]).abs() + (y - point[1]).abs();
+    //     println!("manhattan_distance: {}", manhattan_distance);
+    // }
 }
 
 // endregion:    --- main ---
-
+#[allow(dead_code)]
 fn main_nearest_valid_point() {
-    println!("Hello, world!");
+    println!("\n\nHello, world!");
     let mut x = 3;
     let mut y = 4;
-    let mut points = vec![vec![1, 2], vec![3, 1], vec![2, 4], vec![2, 3], vec![4, 4]];
-    let nearest_point = nearest_valid_point(x, y, points);
-    println!("nearest_point is: {}", nearest_point);
+    println!("\n\nx: {}, y: {}", x, y);
 
-    x = 2;
-    y = 2;
-    points = vec![vec![1, 2], vec![3, 1], vec![2, 4], vec![2, 3], vec![4, 4]];
+    let mut points = vec![vec![1, 2], vec![3, 1], vec![2, 4], vec![2, 3], vec![4, 4]];
+    println!("points: {:?}", points);
     let nearest_point = nearest_valid_point(x, y, points);
-    println!("nearest_point is: {}", nearest_point);
+    println!("\n2 -> nearest_point is: {}", nearest_point);
+
+    x = 3;
+    y = 4;
+    println!("\n\nx: {}, y: {}", x, y);
+
+    points = vec![vec![3, 4]];
+    println!("points: {:?}", points);
+    let nearest_point = nearest_valid_point(x, y, points);
+    println!("\n0 -> nearest_point is: {}", nearest_point);
 }
 
 #[cfg(test)]
