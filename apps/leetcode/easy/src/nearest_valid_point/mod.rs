@@ -1,9 +1,45 @@
 pub fn nearest_valid_point(x: i32, y: i32, points: Vec<Vec<i32>>) -> i32 {
     let n = points.len();
-    println!("points lengths is: {}", n);
     let index = -1;
+    let mut max_distance = std::i32::MAX; // 2147483647
+    for _ in 0..n {
+        println!("{} {} {}", x, y, points[0][0]);
+        max_distance = 1;
+    }
+    println!(
+        "index: {}, len: {}, max_distance: {}",
+        index, n, max_distance
+    );
 
     return index;
+}
+
+#[cfg(test)]
+mod tests {
+    #[allow(unused_imports)]
+    use super::*;
+
+    #[test]
+    fn it_works() {
+        assert_eq!(2 + 2, 4);
+    }
+
+    #[test]
+    #[allow(unused_mut)]
+    fn test_main() {
+        let mut x = 3;
+        let mut y = 4;
+        // [[1,2],[3,1],[2,4],[2,3],[4,4]]
+        let mut points = vec![vec![1, 2], vec![3, 1], vec![2, 4], vec![2, 3], vec![4, 4]];
+        let mut result = nearest_valid_point(x, y, points);
+        assert!(result == -1);
+
+        x = 2;
+        y = 2;
+        points = vec![vec![1, 2], vec![3, 1], vec![2, 4], vec![2, 3], vec![4, 4]];
+        result = nearest_valid_point(x, y, points);
+        assert!(result == -1);
+    }
 }
 
 /*

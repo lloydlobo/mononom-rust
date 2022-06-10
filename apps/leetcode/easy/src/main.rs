@@ -22,6 +22,7 @@ fn main_nearest_valid_point() {
     let mut points = vec![vec![1, 2], vec![3, 1], vec![2, 4], vec![2, 3], vec![4, 4]];
     let nearest_point = nearest_valid_point(x, y, points);
     println!("nearest_point is: {}", nearest_point);
+
     x = 2;
     y = 2;
     points = vec![vec![1, 2], vec![3, 1], vec![2, 4], vec![2, 3], vec![4, 4]];
