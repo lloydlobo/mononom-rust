@@ -1,14 +1,38 @@
+/// nearest valid point
+/// # About
+/// - It is a function that returns the nearest valid point to the given point.
+/// - param: `x`: x coordinate of the given point
+/// - param: `y`: y coordinate of the given point
+/// - param: `points`: a list of points
+/// # Example
+/// ```
+/// let mut x = 3;
+/// let mut y = 4;
+/// println!("\n\nx: {}, y: {}", x, y);
+/// let mut points = vec![vec![1, 2], vec![3, 1], vec![2, 4], vec![2, 3], vec![4, 4]];
+/// println!("points: {:?}", points);
+/// let nearest_point = nearest_valid_point(x, y, points);
+/// println!("\n2 -> nearest_point is: {}", nearest_point);
+/// ```
+/// - x: 3, y: 4
+/// - points: [[1, 2], [3, 1], [2, 4], [2, 3], [4, 4]]
+/// - 2 -> nearest_point is: 2
+/// # Performance Details
+/// - Runtime: 30 ms, faster than 13.73% of Rust online submissions for Find Nearest Point That Has the Same X or Y Coordinate.
+/// - Memory Usage: 3.7 MB, less than 15.69% of Rust online submissions for Find Nearest Point That Has the Same X or Y Coordinate.
 pub fn nearest_valid_point(x: i32, y: i32, points: Vec<Vec<i32>>) -> i32 {
     let points_array = points.clone();
     let n = points_array.len();
     let mut min_distance = std::i32::MAX;
-    let mut nearest_point = 0;
+    let mut nearest_point = -1 as i32;
     for i in 0..n {
         let point: Vec<i32> = points_array[i].clone();
-        let manhattan_distance = (x - point[0]).abs() + (y - point[1]).abs();
-        if manhattan_distance < min_distance {
-            min_distance = manhattan_distance;
-            nearest_point = i;
+        if x == point[0] || y == point[1] {
+            let manhattan_distance = (x - point[0]).abs() + (y - point[1]).abs();
+            if manhattan_distance < min_distance {
+                min_distance = manhattan_distance;
+                nearest_point = i as i32;
+            }
         }
     }
     nearest_point as i32
