@@ -117,6 +117,47 @@ pub fn remove_elements(head: Option<Box<ListNode>>, val: i32) -> Option<Box<List
     }
 }
 
+// region:      --- TEST SUITES ---
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_remove_elements() {
+        let mut head = Some(Box::new(ListNode::new(1)));
+        head.as_mut().unwrap().next = Some(Box::new(ListNode::new(2)));
+        head.as_mut().unwrap().next.as_mut().unwrap().next = Some(Box::new(ListNode::new(6)));
+        head.as_mut()
+            .unwrap()
+            .next
+            .as_mut()
+            .unwrap()
+            .next
+            .as_mut()
+            .unwrap()
+            .next = Some(Box::new(ListNode::new(3)));
+        head.as_mut()
+            .unwrap()
+            .next
+            .as_mut()
+            .unwrap()
+            .next
+            .as_mut()
+            .unwrap()
+            .next
+            .as_mut()
+            .unwrap()
+            .next = Some(Box::new(ListNode::new(4)));
+
+        let result = remove_elements(head, 6);
+        let result_head = result.unwrap();
+        assert_eq!(result_head.val, 1);
+        assert_eq!(result_head.next.unwrap().val, 2);
+    }
+}
+
+// endregion:   --- TEST SUITES ---
 /*
  ________  ________  ________  ___  ___  ___  ___      ___ _______
 |\   __  \|\   __  \|\   ____\|\  \|\  \|\  \|\  \    /  /|\  ___ \
