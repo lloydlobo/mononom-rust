@@ -3,11 +3,14 @@ use std::{collections::HashMap, vec};
 // region:      --- hash_maps ---
 
 pub fn phone_book_hash_map() {
+    // Create a hash map with integers as keys and strings as values
     let mut phone_book: HashMap<i64, &str> = HashMap::new();
 
-    let phone_book_table = format!("{:<10} {:<10}", "Phone", "Name");
+    // Print headings for the phone book
+    let phone_book_table = format!("{:<1} {:<8} {:<10}", "No.", "Phone", "Name");
     println!("{}", phone_book_table);
 
+    // Build entries in the phone book hash map with the following data:
     let mut entries_list: Vec<(i64, &str)> = vec![
         (9090909090, "John Doe"),
         (9090909091, "Jane Doe"),
@@ -15,6 +18,7 @@ pub fn phone_book_hash_map() {
         (9090909093, "Jane Smith"),
     ];
 
+    // Push a single entry to the phone book hash map
     entries_list.push((2342352352, "Jose Doe"));
 
     // Add new entry to the phone book
@@ -25,15 +29,16 @@ pub fn phone_book_hash_map() {
     // print_phone_entries(&entries_list, &mut phone_book);
     let _ = &entries_list.push((9909343494, "Ziggy"));
     insert_new_phone_book_entry(&mut phone_book, vec![(9093343494, "Claudia")]);
+    insert_new_phone_book_entry(&mut phone_book, vec![(9093343484, "Claudia")]);
     print_phone_entries(&entries_list, &mut phone_book);
 
     // Find length of hash map (number of phone_book entries count)
-    let phone_book_entries_count = &mut phone_book.len(); // 4 but why isn't it 5? Because it's a reference to the hash map
+    let phone_book_entries_count = &mut phone_book.len();
     println!("Phone book entries count is: {}", phone_book_entries_count);
 
     // Find if a value exists in the hash map
-    match_phone_book_number_with_name(&phone_book, 9090909090);
-    match_phone_book_number_with_name(&phone_book, 9090909094);
+    match_phone_book_number_with_number(&phone_book, 9090909090);
+    match_phone_book_number_with_number(&phone_book, 9090909094);
 }
 
 // endregion:   --- hash_maps ---
@@ -92,22 +97,25 @@ fn insert_new_phone_book_entry<'a>(
 
 /// Find if a value exists in the hash map
 /// returns: nothing
-/// params:  phone_book: HashMap<&str, i64>, name: &str
+/// params:  phone_book: HashMap<&str, i64>, number: i64
 /// # Functions
-/// - match_phone_book_number_with_name
+/// - match_phone_book_number_with_number
 /// # Examples
 /// ```
-/// match_phone_book_number_with_name(&phone_book, "Jane Doe");
+/// match_phone_book_number_with_number(&phone_book, 9090909090);
 /// ```
 /// # Errors
 /// - none
+/// # Match
+/// - match_phone_book_number_with_number_found -> print_phone_book_number_with_name
+/// - match_phone_book_number_with_number_not_found -> todo: add error message
 /// # Notes
 /// - none
 /// # See Also
 /// - none
 /// # References
 /// - none
-fn match_phone_book_number_with_name<'a>(phone_book: &'a HashMap<i64, &str>, number: i64) {
+fn match_phone_book_number_with_number<'a>(phone_book: &'a HashMap<i64, &str>, number: i64) {
     match phone_book.get(&number) {
         Some(name) => println!("The phone number {} is of: {}", number, name),
         None => println!("No entry found for number: {}", number),
@@ -145,14 +153,14 @@ mod tests {
         phone_book.insert(9090909091, "Jane Doe");
         phone_book.insert(9090909092, "John Smith");
         phone_book.insert(9090909093, "Jane Smith");
-        match_phone_book_number_with_name(&phone_book, 9090909091);
+        match_phone_book_number_with_number(&phone_book, 9090909091);
 
         let mut phone_book: HashMap<i64, &str> = HashMap::new();
         phone_book.insert(9090909090, "John Doe");
         phone_book.insert(9090909091, "Jane Doe");
         phone_book.insert(9090909092, "John Smith");
         phone_book.insert(9090909093, "Jane Smith");
-        match_phone_book_number_with_name(&phone_book, 9090909094);
+        match_phone_book_number_with_number(&phone_book, 9090909094);
     }
 
     #[test]
