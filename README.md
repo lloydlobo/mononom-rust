@@ -1,5 +1,18 @@
 # Mononom Rust
 
+This mono repository hosts binaries and libraries for the Rust programming language.
+
+## Table of Contents
+
+- [Mononom Rust](#mononom-rust)
+  - [Table of Contents](#table-of-contents)
+  - [NX Generators](#nx-generators)
+    - [Build a binary project](#build-a-binary-project)
+  - [Development Environment](#development-environment)
+    - [Run a binary](#run-a-binary)
+      - [One time run](#one-time-run)
+      - [Run with watch mode](#run-with-watch-mode)
+
 ## NX Generators
 
 ### Build a binary project
@@ -9,6 +22,30 @@ npx nx generate @nxrs/cargo:binary <project_name> --directory=bevy --tags='bevy,
 ```
 
 > This project was generated using [Nx](https://nx.dev).
+
+## Development Environment
+
+### Run a binary
+
+#### One time run
+
+```shell
+cargo run --bin <binary-name>
+```
+
+#### Run with watch mode
+
+```shell
+cargo watch -x 'run --bin <project-name>'
+```
+
+- Requirement: You'll want to have cargo-watch installed with
+
+- ```shell
+  cargo install cargo-watch
+  ```
+
+<!-- markdownlint-enable-->
 
 <!-- # MononomRust
 
