@@ -106,13 +106,15 @@ pub fn remove_elements(head: Option<Box<ListNode>>, val: i32) -> Option<Box<List
         return None;
     } else {
         let mut unbox_head: Box<ListNode> = head.unwrap();
-        let mut new_head = remove_elements(unbox_head.next, val);
+        let mut new_head: Option<Box<ListNode>> = remove_elements(unbox_head.next, val);
+
         if unbox_head.val == val {
             new_head = new_head;
         } else {
             unbox_head.next = new_head;
             new_head = Some(unbox_head);
         }
+
         return new_head;
     }
 }
