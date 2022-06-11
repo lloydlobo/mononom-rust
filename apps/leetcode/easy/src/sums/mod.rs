@@ -53,14 +53,18 @@ pub(crate) fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
             output_two_sum.push(hash_map[&seen]);
             output_two_sum.push(i as i32);
         }
+        // If the map did have this key present, the value is updated, and the old value is returned.
+        // The key is not updated, though; this matters for types that can be == without being identical.
+        // The algorithm is randomly seeded, and a reasonable best-effort is made to generate this seed from a high quality, secure source of randomness provided by the host without blocking the program
+        // - source https://doc.rust-lang.org/std/collections/struct.HashMap.html
         hash_map.insert(nums[i], i as i32);
     }
     return output_two_sum;
 }
 
 /*
-    /* Runtime: 94 ms, faster than 75.44% of TypeScript online submissions for Two Sum.
-    Memory Usage: 45.7 MB, less than 25.02% of TypeScript online submissions for Two Sum.  */
+     Runtime: 94 ms, faster than 75.44% of TypeScript online submissions for Two Sum.
+    Memory Usage: 45.7 MB, less than 25.02% of TypeScript online submissions for Two Sum.
 export function twoSum(nums: number[], target: number): number[] {
     const seen = new Map();
 
@@ -76,3 +80,17 @@ export function twoSum(nums: number[], target: number): number[] {
     return [];
   }
    */
+
+// #[cfg(tests)]
+// mod tests {
+//     use super::*;
+
+//     #[test]
+//     fn test_two_sum() {
+
+//         let nums = vec![2, 7, 11, 15];
+//         let target = 9;
+//         let output_two_sum = two_sum(nums, target);
+//         assert_eq!(output_two_sum, vec![0, 1]);
+//     }
+// }
