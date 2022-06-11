@@ -1,18 +1,32 @@
+use linked_lists::remove_elements;
 use sums::two_sum;
 
 use crate::{
     graph_star::{create_input_vec, find_center},
+    linked_lists::ListNode,
     nearest_valid_point::nearest_valid_point,
     random_vector::random_duplicate_vector,
 };
 mod graph_star;
+pub mod linked_lists;
 pub mod nearest_valid_point;
 mod random_vector;
 pub mod sums;
 
 // region:      --- main ---
-
 fn main() {
+    // let mut head: Option<Box<ListNode>> = Some(Box::new(ListNode { val: 1, next: Some(Box::new(ListNode { val: 2, next: Some(Box::new(ListNode { val: 3, next: Some(Box::new(ListNode { val: 6, next: Some(Box::new(ListNode { val: 3, next: Some(Box::new(ListNode { val: 4, next: Some(Box::new(ListNode { val: 5, next: Some(Box::new(ListNode { val: 6, next: None, // end of list })), })), })), })), })), })), })), })); // println!("head: {:?}", head); // copilot you are amazing!!!! (: // end of list
+    let a: ListNode = ListNode::new(6);
+    let box_a: Box<ListNode> = Box::new(a);
+    let option_box_a: Option<Box<ListNode>> = Some(box_a);
+    let result: Option<Box<ListNode>> = remove_elements(option_box_a, 6);
+    println!("removed_element: {:?}", result);
+}
+
+// endregion:    --- main ---
+
+#[allow(dead_code)]
+fn main_two_sum() {
     // cspell:disable
     let nums = vec![2, 7, 11, 15];
     let target = 9;
@@ -21,7 +35,6 @@ fn main() {
     // cspell:enable
 }
 
-// endregion:    --- main ---
 #[allow(dead_code)]
 fn main_nearest_valid_point() {
     println!("\n\nHello, world!");
