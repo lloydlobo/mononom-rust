@@ -33,16 +33,37 @@ impl WavetableOscillator {
         };
     } // new() is a convention in rust for object creating function
 
+    /// Returns the next sample of the oscillator.
+    /// Constructs a new, empty Vec<T> with the specified capacity.
+    /// The vector will be able to hold exactly capacity elements without reallocating. If capacity is 0, the vector will not allocate.
+    /// self is the instance of the object on which we'll invoke our method on // mut self is a convention in rust for object mutability
+    /// &mut - reference to a mutable location borrowing of ownership of the object
+    /// it frees memory from the stack and gives it to the heap
     fn set_frequency(&mut self, frequency: f32) {
         self.index_increment = frequency * self.wave_table.len() as f32 / self.sample_rate as f32;
     }
-    /*
-    self is the instance of the object on which we'll invoke our method on // mut self is a convention in rust for object mutability
+    /// Get Sample is a method of the struct
+    /// returns a reference to the object
+    /// return: f32
+    /// sample - the next sample of the oscillator
+    /// lerp - linear interpolation
+    fn get_sample(&mut self) -> f32 {
+        let sample = self.lerp();
+        self.index += self.index_increment;
+        self.index %= self.wave_table.len() as f32; // % is the modulo operator, here it is used to wrap the index around the wave table
 
-    &mut - reference to a mutable location borrowing of ownership of the object
+        return sample;
+    }
 
-    it frees memory from the stack and gives it to the heap
-    */
+    /// Linear Interpolation (lerp)
+    /// lerp is a function that linearly interpolates between two values
+    /// # Examples
+    /// lerp(a, b, t) = a + t * (b - a)
+    /// lerp(0, 1, 0.5) = 0.5
+    fn lerp(&self) -> f32 {
+        let truncated_index = self.index as usize;
+        todo!("use the modulo operator to wrap the index around the wave table");
+    }
 }
 
 /* REFERENCE
