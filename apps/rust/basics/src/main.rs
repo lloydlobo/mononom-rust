@@ -11,6 +11,7 @@ pub mod constants;
 pub mod expressions_statements;
 pub mod for_loops;
 pub mod functions;
+mod hash_maps;
 pub mod loop_while;
 pub mod mutable;
 pub mod println;
@@ -45,6 +46,9 @@ fn main() {
     functions_system();
     loop_while_system();
     for_loops_system();
+    // clear the screen
+    println!("\x1B[2J\x1B[1;1H");
+    hash_maps::phone_book_hash_map();
 }
 
 /* REFERENCE
@@ -76,3 +80,5 @@ loop and while : 31:32
 for : 33:13
 
 */
+
+

@@ -61,7 +61,30 @@ pub(crate) fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
     }
     return output_two_sum;
 }
-
+/*
+Runtime: 0 ms, faster than 100.00% of Rust online submissions for Two Sum.
+Memory Usage: 2.5 MB, less than 32.06% of Rust online submissions for Two Sum.
+ */
+#[derive(Debug, Clone, PartialEq, PartialOrd, Eq, Ord, Default, Hash)]
+pub(crate) struct TwoSum {
+    pub(crate) nums: Vec<i32>,
+    pub(crate) target: i32,
+}
+impl TwoSum {
+    pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
+        let mut hash_cache: std::collections::HashMap<i32, i32> = std::collections::HashMap::new();
+        let mut output_indices = Vec::new();
+        for i in 0..nums.len() {
+            let cached: i32 = target - nums[i];
+            if hash_cache.contains_key(&cached) {
+                output_indices.push(i as i32);
+                output_indices.push(hash_cache[&cached]);
+            }
+            hash_cache.insert(nums[i], i as i32);
+        }
+        output_indices
+    }
+}
 /*
      Runtime: 94 ms, faster than 75.44% of TypeScript online submissions for Two Sum.
     Memory Usage: 45.7 MB, less than 25.02% of TypeScript online submissions for Two Sum.
