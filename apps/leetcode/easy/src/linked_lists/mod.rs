@@ -125,7 +125,23 @@ mod tests {
 
     #[test]
     fn test_remove_elements() {
-        let mut head = Some(Box::new(ListNode::new(1)));
+        let mut head: Option<Box<ListNode>> = Some(Box::new(ListNode::new(1)));
+        let _head: () = create_head_list_node(&mut head);
+
+        let result = remove_elements(head, 6);
+        let result_head = result.unwrap();
+        assert_eq!(result_head.val, 1);
+        assert_eq!(result_head.next.unwrap().val, 2);
+    }
+
+    /// Create a linked list with the given head node.
+    /// # Parameters
+    /// * `head: Option<Box<ListNode>>`
+    /// # Returns
+    /// * `()`
+    /// # Panics
+    /// - No panic.
+    fn create_head_list_node(head: &mut Option<Box<ListNode>>) -> () {
         head.as_mut().unwrap().next = Some(Box::new(ListNode::new(2)));
         head.as_mut().unwrap().next.as_mut().unwrap().next = Some(Box::new(ListNode::new(6)));
         head.as_mut()
@@ -149,12 +165,16 @@ mod tests {
             .as_mut()
             .unwrap()
             .next = Some(Box::new(ListNode::new(4)));
-
-        let result = remove_elements(head, 6);
-        let result_head = result.unwrap();
-        assert_eq!(result_head.val, 1);
-        assert_eq!(result_head.next.unwrap().val, 2);
     }
+
+    // fn create_custom_head_list_nodes_with_presets(
+    //     head: &mut Option<Box<ListNode>>,
+    //     val: i32,
+    //     next: Option<Box<ListNode>>,
+    // ) -> () {
+    //     head.as_mut().unwrap().val = val;
+    //     head.as_mut().unwrap().next = next;
+    // }
 }
 
 // endregion:   --- TEST SUITES ---
