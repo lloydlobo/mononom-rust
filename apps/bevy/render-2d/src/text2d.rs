@@ -6,3 +6,14 @@
 // struct AnimateRotation;
 // #[derive(Component)]
 // struct AnimateScale;
+
+pub fn remove() {
+    let node = vec![1, 2];
+    let val = 2;
+    loop {
+        if !(node && node == val) {
+            break;
+        }
+        println!("{}", node);
+    }
+}
