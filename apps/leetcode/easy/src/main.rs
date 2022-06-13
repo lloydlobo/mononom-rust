@@ -15,6 +15,7 @@ pub mod nearest_valid_point;
 mod random_vector;
 pub mod sums;
 mod trim_mean;
+mod robot_origin;
 // endregion:   --- USE | MOD ---
 
 // region:      --- main ---
