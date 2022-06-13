@@ -262,11 +262,27 @@ mod tests {
     #[should_panic(
         expected = "The length of the array must be a multiple of 20 and between 20 and 1000."
     )]
-    fn test_trim_mean_arr_len_constraint() {
+    fn test_trim_mean_arr_len_less_tan_20() {
         let percent: usize = 5;
         let cent: usize = percent;
         let arr: Vec<i32> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9]; // arr
         let output_trim_mean: f64 = trim_mean(arr, cent);
         assert_eq!(output_trim_mean, 50.5);
     } // test_trim_mean_arr_len_constraint
+
+    #[test]
+    #[should_panic(
+        expected = "The length of the array must be a multiple of 20 and between 20 and 1000."
+    )]
+    fn test_trim_mean_arr_len_greater_than_1000() {
+        let percent: usize = 5;
+        let cent: usize = percent;
+        let mut arr = Vec::<i32>::with_capacity(1001);
+        for i in 0..1001 {
+            arr.push(i);
+        }
+        // println!("arr.len(): {}", arr.len()); // arr.len(): 10011001
+        let output_trim_mean: f64 = trim_mean(arr, cent);
+        assert_eq!(output_trim_mean, 50.5);
+    }
 } // mod tests
