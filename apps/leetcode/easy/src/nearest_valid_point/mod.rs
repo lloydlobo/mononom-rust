@@ -1,10 +1,21 @@
-/// nearest valid point
-/// # About
+///////////////////////////////////////////////////////////////////////////////
+///
+/// @title Nearest Valid Point
+///
+///////////////////////////////////////////////////////////////////////////////
+
+/// Returns the  nearest valid point to the given point.
+///
 /// - It is a function that returns the nearest valid point to the given point.
+///
+/// # Arguments
+///
 /// - param: `x`: x coordinate of the given point
 /// - param: `y`: y coordinate of the given point
 /// - param: `points`: a list of points
+///
 /// # Example
+///
 /// ```
 /// let mut x = 3;
 /// let mut y = 4;
@@ -14,32 +25,15 @@
 /// let nearest_point = nearest_valid_point(x, y, points);
 /// println!("\n2 -> nearest_point is: {}", nearest_point);
 /// ```
+///
 /// - x: 3, y: 4
 /// - points: [[1, 2], [3, 1], [2, 4], [2, 3], [4, 4]]
 /// - 2 -> nearest_point is: 2
-
-/// - Runtime: 30 ms, faster than 13.73% of Rust online submissions for Find Nearest Point That Has the Same X or Y Coordinate.
-/// - Memory Usage: 3.7 MB, less than 15.69% of Rust online submissions for Find Nearest Point That Has the Same X or Y Coordinate.
-// pub fn nearest_valid_point(x: i32, y: i32, points: Vec<Vec<i32>>) -> i32 {
-//     let points_array = points.clone();
-//     let n = points_array.len();
-//     let mut min_distance = std::i32::MAX;
-//     let mut nearest_point = -1 as i32;
-//     for i in 0..n {
-//         let point: Vec<i32> = points_array[i].clone();
-//         if x == point[0] || y == point[1] {
-//             let manhattan_distance = (x - point[0]).abs() + (y - point[1]).abs();
-//             if manhattan_distance < min_distance {
-//                 min_distance = manhattan_distance;
-//                 nearest_point = i as i32;
-//             }
-//         }
-//     }
-//     nearest_point as i32
-// }
-
-/// Runtime: 27 ms, faster than 31.37% of Rust online submissions for Find Nearest Point That Has the Same X or Y Coordinate.
-/// Memory Usage: 2.8 MB, less than 84.31% of Rust online submissions for Find Nearest Point That Has the Same X or Y Coordinate.
+///
+/// # Performance
+///
+/// - Runtime: 27 ms, faster than 31.37% of Rust online submissions for Find Nearest Point That Has the Same X or Y Coordinate.
+/// - Memory Usage: 2.8 MB, less than 84.31% of Rust online submissions for Find Nearest Point That Has the Same X or Y Coordinate.
 pub fn nearest_valid_point(x: i32, y: i32, points: Vec<Vec<i32>>) -> i32 {
     let n = points.len();
     let mut min = std::i32::MAX;
@@ -56,6 +50,11 @@ pub fn nearest_valid_point(x: i32, y: i32, points: Vec<Vec<i32>>) -> i32 {
     }
     loc
 }
+///////////////////////////////////////////////////////////////////////////////
+///
+/// @title Unit Tests
+///
+///////////////////////////////////////////////////////////////////////////////
 
 #[cfg(test)]
 mod tests {
@@ -69,20 +68,30 @@ mod tests {
 
     #[test]
     fn test_main() {
-        let mut x = 3;
-        let mut y = 4;
+        let x = 3;
+        let y = 4;
         // [[1,2],[3,1],[2,4],[2,3],[4,4]]
-        let mut points_array = vec![vec![1, 2], vec![3, 1], vec![2, 4], vec![2, 3], vec![4, 4]];
-        let mut result = nearest_valid_point(x, y, points_array);
+        let points_array = vec![vec![1, 2], vec![3, 1], vec![2, 4], vec![2, 3], vec![4, 4]];
+        let result = nearest_valid_point(x, y, points_array);
         assert!(result == 2);
+    }
 
-        x = 2;
-        y = 2;
-        points_array = vec![vec![1, 2], vec![3, 1], vec![2, 4], vec![2, 3], vec![4, 4]];
-        result = nearest_valid_point(x, y, points_array);
+    #[test]
+    fn test_main_no_valid_points() {
+        let x = 7;
+        let y = 10;
+        // [[1,2],[3,1],[2,4],[2,3],[4,4]]
+        let points_array = vec![vec![1, 2], vec![3, 1], vec![2, 4], vec![2, 3], vec![4, 4]];
+        let result = nearest_valid_point(x, y, points_array);
         assert!(result == -1);
     }
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// end
+//
+///////////////////////////////////////////////////////////////////////////////
 
 /*
 ....###....########...######..##.....##.####.##.....##.########
@@ -111,3 +120,23 @@ function nearestValidPoint(x: number, y: number, points_array: number[][]): numb
   return index;
 }
  */
+
+// - Runtime: 30 ms, faster than 13.73% of Rust online submissions for Find Nearest Point That Has the Same X or Y Coordinate.
+// - Memory Usage: 3.7 MB, less than 15.69% of Rust online submissions for Find Nearest Point That Has the Same X or Y Coordinate.
+// pub fn nearest_valid_point(x: i32, y: i32, points: Vec<Vec<i32>>) -> i32 {
+//     let points_array = points.clone();
+//     let n = points_array.len();
+//     let mut min_distance = std::i32::MAX;
+//     let mut nearest_point = -1 as i32;
+//     for i in 0..n {
+//         let point: Vec<i32> = points_array[i].clone();
+//         if x == point[0] || y == point[1] {
+//             let manhattan_distance = (x - point[0]).abs() + (y - point[1]).abs();
+//             if manhattan_distance < min_distance {
+//                 min_distance = manhattan_distance;
+//                 nearest_point = i as i32;
+//             }
+//         }
+//     }
+//     nearest_point as i32
+// }
