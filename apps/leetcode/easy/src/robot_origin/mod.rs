@@ -2,10 +2,16 @@
 ///
 /// robot_origin
 ///
+/// # Sources
+/// https://leetcode.com/problems/robot-return-to-origin/submissions/
 ///
 /// # Performance
 /// Runtime: 4 ms, faster than 62.96% of Rust online submissions for Robot Return to Origin.
 /// Memory Usage: 2.2 MB, less than 11.11% of Rust online submissions for Robot Return to Origin.
+///
+/// # Update
+/// Runtime: 2 ms, faster than 85.19% of Rust online submissions for Robot Return to Origin.
+/// Memory Usage: 2.2 MB, less than 44.44% of Rust online submissions for Robot Return to Origin.
 ///
 ///////////////////////////////////////////////////////////////////////////////
 
