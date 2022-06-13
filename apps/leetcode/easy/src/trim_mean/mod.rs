@@ -111,9 +111,9 @@ fn validate_arr(arr: &Vec<i32>, percent: &mut usize) -> Option<f64> {
     }
 
     // if we get here, we have a valid array and a valid percent
-    // but if the values of `arr` are less than 0 or greater than 105
-    let invalid_arr = arr.iter().any(|v| v < &0 && v > &105);
-    if !invalid_arr {
+    // but if the values of `arr` are less than 0 or greater than 104
+    let valid_arr = arr.iter().any(|v| v >= &0 && v <= &104);
+    if !valid_arr {
         panic!("Invalid array! The values of the array must be between 0 and 104.");
     }
     None
@@ -208,4 +208,19 @@ mod tests {
         let output_trim_mean: f64 = trim_mean(arr, cent);
         assert_eq!(output_trim_mean, 50.5);
     } // test_trim_mean_cent_more_than_49
+
+    #[test]
+    fn test_trim_mean_panics() {
+        let percent: usize = 0;
+        let cent: usize = percent;
+        let arr: Vec<i32> = vec![
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,
+            47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68,
+            69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
+            91, 92, 93, 94, 95, 96, 97, 98, 99, 100,
+        ]; // arr
+        let output_trim_mean: f64 = trim_mean(arr, cent);
+        assert_eq!(output_trim_mean, 50.5);
+    } // test_trim_mean_panics
 } // mod tests
