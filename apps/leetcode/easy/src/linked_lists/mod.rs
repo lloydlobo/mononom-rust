@@ -12,6 +12,57 @@ impl ListNode {
     }
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////
+// Solution
+//////////////////////////////////////////////////////////////////////////////////////////
+
+/// Removes the element in the node lists that are similar to val in the argument
+///
+/// Given the head of a linked list and an integer val, remove all the nodes
+/// of the linked list that has Node.val == val, and return the new head.
+///
+/// # Arguments
+///
+/// * `head` - The head of the linked list
+/// * `val` - The value to be removed
+///
+/// # Return
+///
+/// The new head of the linked list without the removed nodes "val: i32"
+///
+/// # Source
+///
+/// 203. Remove Linked List Elements
+/// [https://leetcode.com/problems/remove-linked-list-elements/](https://leetcode.com/problems/remove-linked-list-elements/)
+///
+/// # Example
+///
+/// ```
+/// Input: head = [1,2,6,3,4,5,6], val = 6
+/// Output: [1,2,3,4,5]
+///
+/// ```
+///
+/// # Performance
+///
+/// ## Runtime
+/// Runtime: 3 ms, faster than 88.37% of Rust online submissions for Remove Linked List Elements.
+///
+/// ## Memory Usage
+/// Memory Usage: 2.9 MB, less than 39.53% of Rust online submissions for Remove Linked List Elements.
+pub(crate) fn remove_elements(mut head: Option<Box<ListNode>>, val: i32) -> Option<Box<ListNode>> {
+    let mut none: Option<Box<ListNode>> = None;
+    let mut cache: &mut Option<Box<ListNode>> = &mut none;
+
+    while let Some(mut node) = head {
+        head = Option::take(&mut node.next);
+        if node.val != val {
+            cache = &mut cache.insert(node).next;
+        }
+    } // end of while loop
+    none
+} // end of remove_elements
+
 // region:      --- METHODS ---
 
 // region:      --- METHOD: Iteration ---
@@ -43,10 +94,11 @@ impl ListNode {
 /// 5 ms, faster than 69.77% of Rust online submissions for Remove Linked List Elements.
 /// ## Memory Usage
 /// 2.8 MB, less than 79.07% of Rust online submissions for Remove Linked List Elements.
-pub(crate) fn remove_elements(mut head: Option<Box<ListNode>>, val: i32) -> Option<Box<ListNode>> {
+pub(crate) fn remov_elements(mut head: Option<Box<ListNode>>, val: i32) -> Option<Box<ListNode>> {
     let mut nodes = None;
     let mut end = &mut nodes; // what does &mut do -> tip: &mut is not a reference, it is a mutable reference to a reference. SO who is the owner of this reference? The owner of the reference is the owner of the reference to the reference.
 
+    // By using Some(mut node) while iterating, it automatically unwraps into both Some and None
     while let Some(mut node) = head {
         // Takes the value out of the option, leaving a [None] in its place.
         head = node.next.take(); // what does this do? -> tip: take is a method on the Option enum.
@@ -117,6 +169,11 @@ take allows taking ownership of a struct field by replacing it with an â€œemptyâ
   But take can be used to disassociate the original value of self.buf from self, allowing it to be returned:
 */
 
+/*
+Some(ListNode { val: 1, next: Some(ListNode { val: 2, next: Some(ListNode { val: 6, next: Some(ListNode { val: 3, next: Some(ListNode { val: 4, next: Some(ListNode { val: 5, next: Some(ListNode { val: 6, next: None }) }) }) }) }) }) })
+
+
+*/
 // impl Solution {
 
 /// remove_elements takes a head node and a target value.

@@ -12,12 +12,24 @@ pub mod linked_lists;
 pub mod nearest_valid_point;
 mod random_vector;
 pub mod sums;
+mod trim_mean;
 // endregion:   --- USE | MOD ---
 
 // region:      --- main ---
 fn main() {
     let head = create_list_elements();
     println!("remove_element: {:?}", remove_elements(head, 6));
+
+    let trim_mean = trim_mean::trim_mean(vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    println!("trim_mean: {}", trim_mean);
+    let new_vec = [
+        4, 8, 4, 10, 0, 7, 1, 3, 7, 8, 8, 3, 4, 1, 6, 2, 1, 1, 8, 0, 9, 8, 0, 3, 9, 10, 3, 10, 1,
+        10, 7, 3, 2, 1, 4, 9, 10, 7, 6, 4, 0, 8, 5, 1, 2, 1, 6, 2, 5, 0, 7, 10, 9, 10, 3, 7, 10, 5,
+        8, 5, 7, 6, 7, 6, 10, 9, 5, 10, 5, 5, 7, 2, 10, 7, 7, 8, 2, 0, 1, 1,
+    ];
+    let new_vec_trim_mean = trim_mean::trim_mean(new_vec.to_vec());
+    println!("new_vec_trim_mean: {}", new_vec_trim_mean); // new_vec_trim_mean: 5.277777777777778
+    assert!(new_vec_trim_mean == 5.29167);
 }
 
 // endregion:    --- main ---
