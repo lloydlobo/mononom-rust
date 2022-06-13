@@ -16,6 +16,7 @@
 /// arr.length is a multiple of 20.
 /// 0 <= arr[i] <= 105
 ///////////////////////////////////////////////////////////////////////////////
+use core::panic;
 
 /// Returns the mean of the values of an array trimmed by `cent` percent from both ends.
 ///
@@ -54,9 +55,11 @@
 /// * -> f64
 pub fn trim_mean(arr: Vec<i32>, cent: usize) -> f64 {
     let mut percent: usize = cent;
+
     if let Some(value) = validate_arr(&arr, &mut percent) {
         return value;
     }
+
     let mut arr: Vec<i32> = arr;
     arr.sort();
 
@@ -83,22 +86,35 @@ pub fn trim_mean(arr: Vec<i32>, cent: usize) -> f64 {
 /// ## Cases:
 ///
 /// 1. If `arr` is empty or `arr` is not a multiple of 20, or `arr` length is less than 20 or greater than 1000, return `None`.
-/// 2. If `percent` is greater than 100, return 0.0.
+/// 2. If `percent` is greater than 50, return `None`.
+/// 3. If `percent` is less than 0, return `None`.
+/// 4. If `percent` is equal to 50, return `None`.
+/// 5. If `percent` is equal to 0, return the sum of all values of `arr`.
+///
 fn validate_arr(arr: &Vec<i32>, percent: &mut usize) -> Option<f64> {
     if arr.len() % 20 != 0 {
-        return Some(0.0);
+        panic!("The length of the array must be a multiple of 20.");
     }
     if arr.len() < 20 && arr.len() > 1001 {
+        panic!("The length of the array must be between 20 and 1000.");
+    }
+    if *percent > 50 || *percent < 0 as usize {
+        panic!("The percentage must be between 0 and 50.");
+    }
+
+    // comparison is useless due to type limits -- when usize < 0, it is always false
+    if *percent == 50 {
         return Some(0.0);
     }
-    if *percent >= 50 {
-        *percent = 100 - *percent;
-    } else if *percent > 100 {
-        return Some(0.0);
+    if *percent == 0 {
+        return Some(arr.iter().sum::<i32>() as f64);
     }
+
+    // if we get here, we have a valid array and a valid percent
+    // but if the values of `arr` are less than 0 or greater than 105
     let invalid_arr = arr.iter().any(|v| v < &0 && v > &105);
-    if invalid_arr {
-        return Some(0.0);
+    if !invalid_arr {
+        panic!("Invalid array! The values of the array must be between 0 and 104.");
     }
     None
 } // end of trim_mean

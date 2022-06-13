@@ -25,7 +25,7 @@ fn main() {
         vec![
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
         ],
-        59,
+        1,
     );
     println!("trim_mean: {}", trim_mean);
     let new_vec = [
@@ -33,7 +33,7 @@ fn main() {
         10, 7, 3, 2, 1, 4, 9, 10, 7, 6, 4, 0, 8, 5, 1, 2, 1, 6, 2, 5, 0, 7, 10, 9, 10, 3, 7, 10, 5,
         8, 5, 7, 6, 7, 6, 10, 9, 5, 10, 5, 5, 7, 2, 10, 7, 7, 8, 2, 0, 1, 1,
     ];
-    let new_vec_trim_mean = trim_mean::trim_mean(new_vec.to_vec(), 5);
+    let new_vec_trim_mean = trim_mean::trim_mean(new_vec.to_vec(), 51);
     println!("new_vec_trim_mean: {}", new_vec_trim_mean); // new_vec_trim_mean: 5.277777777777778
                                                           // assert!(new_vec_trim_mean == 5.29167);
 }
