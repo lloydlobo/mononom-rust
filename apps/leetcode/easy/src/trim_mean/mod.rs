@@ -98,9 +98,17 @@ fn validate_arr(arr: &Vec<i32>, percent: &mut usize) -> Option<f64> {
     if arr.len() < 20 && arr.len() > 1001 {
         panic!("The length of the array must be between 20 and 1000.");
     }
-    if *percent > 50 || *percent < 0 as usize {
+    if *percent > 50
+        || *percent < 0 as usize
+        || *percent == f32::INFINITY as usize
+        || *percent == f32::NAN as usize
+    {
         panic!("The percentage must be between 0 and 50.");
     }
+    // panic if usize is a fractional float like 1 / 2 as usize
+    // if *percent < 9 as usize / 10 as usize && *percent != 0 {
+    //     panic!("The percentage must be between 0 and 50.");
+    // }
 
     // comparison is useless due to type limits -- when usize < 0, it is always false
     if *percent == 50 {
@@ -112,8 +120,9 @@ fn validate_arr(arr: &Vec<i32>, percent: &mut usize) -> Option<f64> {
 
     // if we get here, we have a valid array and a valid percent
     // but if the values of `arr` are less than 0 or greater than 104
-    let valid_arr = arr.iter().any(|v| v >= &0 && v <= &104);
-    if !valid_arr {
+    let invalid_arr = arr.iter().any(|v| v < &0 || v > &104); // tip: its `any` function is a bit faster than `all`
+
+    if invalid_arr {
         panic!("Invalid array! The values of the array must be between 0 and 104.");
     }
     None
@@ -195,6 +204,7 @@ mod tests {
     } // test_trim_mean_4
 
     #[test]
+    #[should_panic(expected = "The percentage must be between 0 and 50.")]
     fn test_trim_mean_cent_more_than_49() {
         let percent: usize = 59;
         let cent: usize = percent;
@@ -207,9 +217,11 @@ mod tests {
         ]; // arr
         let output_trim_mean: f64 = trim_mean(arr, cent);
         assert_eq!(output_trim_mean, 50.5);
+        // add assertion that trim_mean will panic
     } // test_trim_mean_cent_more_than_49
 
     #[test]
+    #[should_panic(expected = "The percentage must be between 0 and 50.")]
     fn test_trim_mean_panics() {
         let percent: usize = 0;
         let cent: usize = percent;
@@ -223,4 +235,28 @@ mod tests {
         let output_trim_mean: f64 = trim_mean(arr, cent);
         assert_eq!(output_trim_mean, 50.5);
     } // test_trim_mean_panics
+
+    #[test]
+    #[should_panic(expected = "Invalid array! The values of the array must be between 0 and 104.")]
+    fn test_trim_mean_invalid_values() {
+        let percent: usize = 5;
+        // here some values in the array are greater than 104 and less than 0
+        // create array of size of multiple of 20, where some values elements are greater or less than 0 and 104, e.g. [-1, 105, 2 , 2999 ...]
+        let cent: usize = percent;
+        let arr: Vec<i32> = vec![
+            -1, 105, 2, 2999, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
+            23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44,
+            45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66,
+            67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88,
+            89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100,
+        ]; // arr
+
+        // let valid_arr = arr.iter().any(|v| v <= &0 && v >= &104);
+        // println!("true or false: {:?}", valid_arr);
+        println!("arr.len(): {}", arr.len());
+        // assert_eq!(arr.len(), 20 * 20); // panic message "assertion failed"
+        // assert!(arr.iter().all(|&x| x >= 0 && x <= 104));
+        let output_trim_mean: f64 = trim_mean(arr, cent);
+        assert_eq!(output_trim_mean, 52.5);
+    }
 } // mod tests
