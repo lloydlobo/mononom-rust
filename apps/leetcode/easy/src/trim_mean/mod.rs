@@ -1,35 +1,195 @@
-pub fn trim_mean(arr: Vec<i32>) -> f64 {
-    println!("arr: {:?}", arr);
+///////////////////////////////////////////////////////////////////////////////
+///
+/// @title Trim Mean
+///
+/// @author anonymous
+/// @date 20022-06-13
+/// @url https://leetcode.com/problems/trim-mean/
+///
+/// @problem_description
+/// Given an integer array arr, return the mean of the remaining integers
+/// after removing the smallest 5% and the largest 5% of the elements.
+/// Answers within 10-5 of the actual answer will be considered accepted.
+///
+/// @constraints
+/// 20 <= arr.length <= 1000
+/// arr.length is a multiple of 20.
+/// 0 <= arr[i] <= 105
+///////////////////////////////////////////////////////////////////////////////
 
-    let mut array: Vec<i32> = arr;
-    array.sort();
-    let len = array.len(); // 20
-
-    if len >= 20 && len <= 1000 {
-        let len_del_5cent = len * 5 / 100; // 1
-
-        println!("len: {}", len);
-        let end_len = len - len_del_5cent;
-
-        println!("array: {:?}", array);
-
-        for i in (end_len..len).rev() {
-            array.remove(i);
-            // array.pop();
-        }
-        for i in 0..len_del_5cent {
-            array.remove(i);
-        }
-        println!("array: {:?}", array);
-
-        let mut sum: i32 = array.iter().sum();
-        let sum_float: f64 = sum.into();
-        let mut new_len: i32 = array.len().try_into().unwrap(); // error here?
-        let new_len_float: f64 = new_len.into();
-        let mean: f64 = sum_float / 100000.00000 / new_len_float * 100000.00000;
-
-        return mean;
-    } else {
-        return 1.00000;
+/// Returns the mean of the values of an array trimmed by `cent` percent from both ends.
+///
+/// Given an integer array arr, return the mean of the remaining integers
+/// after removing the smallest `cent` (5%) and the largest `cent` (5%) of the elements.
+///
+/// # Examples
+///
+/// Basic usage:
+/// ```
+/// use trim_mean::trim_mean;
+/// let arr = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+/// let cent = 5;
+/// let output_trim_mean = trim_mean(arr, cent);
+/// assert!(output_trim_mean == 10.5);
+/// ```
+/// # Performance
+///
+/// - Time Complexity:
+/// O(n)
+/// - Space Complexity:
+/// O(1)
+/// - Runtime:
+/// 0 ms, faster than 100.00% of Rust online submissions for Mean of Array After Removing Some Elements.
+/// - Memory Usage:
+/// 2.2 MB, less than 66.67% of Rust online submissions for Mean of Array After Removing Some Elements.
+///
+/// # Arguments
+///
+/// * `arr` - The array of values to be trimmed.
+/// * `cent` - The percentage of values to be trimmed.
+///
+/// # Return
+///
+/// The mean of the values of an array trimmed by cent% from both ends.
+/// * -> f64
+pub fn trim_mean(arr: Vec<i32>, cent: usize) -> f64 {
+    let mut percent: usize = cent;
+    if let Some(value) = validate_arr(&arr, &mut percent) {
+        return value;
     }
+    let mut arr: Vec<i32> = arr;
+    arr.sort();
+
+    let trim: usize = (percent * arr.len()) / 100;
+    let arr_trim_start_end: &[i32] = &arr[trim..arr.len() - trim];
+
+    let sum: i32 = arr_trim_start_end.iter().sum::<i32>();
+    let arr_new_len: usize = arr_trim_start_end.len();
+
+    let mean: f64 = sum as f64 / arr_new_len as f64;
+    mean
 }
+
+/// Validates the constraints of the problem with the given array.
+///
+/// # Arguments
+///
+/// * `arr` - The array of values to be trimmed.
+/// * `percent` - The percentage of values to be trimmed,
+/// which is borrowed from central function's `cent` argument.
+///
+/// # Return
+///
+/// ## Cases:
+///
+/// 1. If `arr` is empty or `arr` is not a multiple of 20, or `arr` length is less than 20 or greater than 1000, return `None`.
+/// 2. If `percent` is greater than 100, return 0.0.
+fn validate_arr(arr: &Vec<i32>, percent: &mut usize) -> Option<f64> {
+    if arr.len() % 20 != 0 {
+        return Some(0.0);
+    }
+    if arr.len() < 20 && arr.len() > 1001 {
+        return Some(0.0);
+    }
+    if *percent >= 50 {
+        *percent = 100 - *percent;
+    } else if *percent > 100 {
+        return Some(0.0);
+    }
+    let invalid_arr = arr.iter().any(|v| v < &0 && v > &105);
+    if invalid_arr {
+        return Some(0.0);
+    }
+    None
+} // end of trim_mean
+
+///////////////////////////////////////////////////////////////////////////////
+///
+/// @title Unit Tests
+///
+/// @date 20022-06-13
+///
+///////////////////////////////////////////////////////////////////////////////
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_basic() {
+        let cent: usize = 5;
+        let output_trim_mean: f64 = trim_mean(
+            vec![
+                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+            ],
+            cent,
+        );
+        assert!(output_trim_mean == 10.5);
+    } // test_basic
+
+    #[test]
+    fn test_trim_mean() {
+        let percent: usize = 10;
+        let cent: usize = percent;
+        let arr: Vec<i32> = vec![
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        ]; // arr
+        let output_trim_mean: f64 = trim_mean(arr, cent);
+        assert_eq!(output_trim_mean, 10.5);
+    } // test_trim_mean
+
+    #[test]
+    fn test_trim_mean_2() {
+        let percent: usize = 20;
+        let cent: usize = percent;
+        let arr: Vec<i32> = vec![
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        ]; // arr
+        let output_trim_mean = trim_mean(arr, cent);
+        assert_eq!(output_trim_mean, 10.5);
+    } // test_trim_mean_2
+
+    #[test]
+    fn test_trim_mean_3() {
+        let percent: usize = 5;
+        let cent: usize = percent;
+        let arr: Vec<i32> = vec![
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,
+            47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68,
+            69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
+            91, 92, 93, 94, 95, 96, 97, 98, 99, 100,
+        ]; // arr
+        let output_trim_mean: f64 = trim_mean(arr, cent);
+        assert_eq!(output_trim_mean, 50.5);
+    } // test_trim_mean_3
+
+    #[test]
+    fn test_trim_mean_4() {
+        let percent: usize = 49;
+        let cent: usize = percent;
+        let arr: Vec<i32> = vec![
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,
+            47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68,
+            69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
+            91, 92, 93, 94, 95, 96, 97, 98, 99, 100,
+        ]; // arr
+        let output_trim_mean: f64 = trim_mean(arr, cent);
+        assert_eq!(output_trim_mean, 50.5);
+    } // test_trim_mean_4
+
+    #[test]
+    fn test_trim_mean_cent_more_than_49() {
+        let percent: usize = 59;
+        let cent: usize = percent;
+        let arr: Vec<i32> = vec![
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,
+            47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68,
+            69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
+            91, 92, 93, 94, 95, 96, 97, 98, 99, 100,
+        ]; // arr
+        let output_trim_mean: f64 = trim_mean(arr, cent);
+        assert_eq!(output_trim_mean, 50.5);
+    } // test_trim_mean_cent_more_than_49
+} // mod tests
