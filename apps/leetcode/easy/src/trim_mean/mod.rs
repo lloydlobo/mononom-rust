@@ -92,11 +92,8 @@ pub fn trim_mean(arr: Vec<i32>, cent: usize) -> f64 {
 /// 5. If `percent` is equal to 0, return the sum of all values of `arr`.
 ///
 fn validate_arr(arr: &Vec<i32>, percent: &mut usize) -> Option<f64> {
-    if arr.len() % 20 != 0 {
-        panic!("The length of the array must be a multiple of 20.");
-    }
-    if arr.len() < 20 && arr.len() > 1001 {
-        panic!("The length of the array must be between 20 and 1000.");
+    if arr.len() % 20 != 0 || arr.len() < 20 || arr.len() > 1000 {
+        panic!("The length of the array must be a multiple of 20 and between 20 and 1000.");
     }
     if *percent > 50
         || *percent < 0 as usize
@@ -105,10 +102,12 @@ fn validate_arr(arr: &Vec<i32>, percent: &mut usize) -> Option<f64> {
     {
         panic!("The percentage must be between 0 and 50.");
     }
-    // panic if usize is a fractional float like 1 / 2 as usize
-    // if *percent < 9 as usize / 10 as usize && *percent != 0 {
-    //     panic!("The percentage must be between 0 and 50.");
-    // }
+    /*
+    panic if usize is a fractional float like 1 / 2 as usize
+    if *percent < 9 as usize / 10 as usize && *percent != 0 {
+        panic!("The percentage must be between 0 and 50.");
+    }
+    */
 
     // comparison is useless due to type limits -- when usize < 0, it is always false
     if *percent == 50 {
@@ -250,13 +249,24 @@ mod tests {
             67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88,
             89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100,
         ]; // arr
-
-        // let valid_arr = arr.iter().any(|v| v <= &0 && v >= &104);
-        // println!("true or false: {:?}", valid_arr);
+           // let valid_arr = arr.iter().any(|v| v <= &0 && v >= &104);
+           // println!("true or false: {:?}", valid_arr);
         println!("arr.len(): {}", arr.len());
         // assert_eq!(arr.len(), 20 * 20); // panic message "assertion failed"
         // assert!(arr.iter().all(|&x| x >= 0 && x <= 104));
         let output_trim_mean: f64 = trim_mean(arr, cent);
         assert_eq!(output_trim_mean, 52.5);
     }
+
+    #[test]
+    #[should_panic(
+        expected = "The length of the array must be a multiple of 20 and between 20 and 1000."
+    )]
+    fn test_trim_mean_arr_len_constraint() {
+        let percent: usize = 5;
+        let cent: usize = percent;
+        let arr: Vec<i32> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9]; // arr
+        let output_trim_mean: f64 = trim_mean(arr, cent);
+        assert_eq!(output_trim_mean, 50.5);
+    } // test_trim_mean_arr_len_constraint
 } // mod tests
