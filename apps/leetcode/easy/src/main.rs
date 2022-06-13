@@ -1,5 +1,6 @@
 // region:      --- USE | MOD ---
 use crate::{
+    even_digits::find_numbers,
     graph_star::{create_input_vec, find_center},
     linked_lists::ListNode,
     nearest_valid_point::nearest_valid_point,
@@ -7,6 +8,7 @@ use crate::{
 };
 // use linked_lists::remove_elements;
 use sums::two_sum;
+mod even_digits;
 mod graph_star;
 pub mod linked_lists;
 pub mod nearest_valid_point;
@@ -21,6 +23,12 @@ fn main() {
     // println!("remove_element: {:?}", remove_elements(head, 6));
     // clearscreen::clear().expect("failed to clear screen");
 
+    println!(
+        "find_numbers: {:?}",
+        find_numbers(vec![
+            12, 10, 14, 1, 15, 20, 4000, 30, 40, 50, 60, 70, 80, 90, 100
+        ])
+    );
     let trim_mean = trim_mean::trim_mean(
         vec![
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
