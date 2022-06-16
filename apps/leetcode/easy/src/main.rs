@@ -19,6 +19,7 @@ mod random_vector;
 mod robot_origin;
 pub mod sums;
 mod trim_mean;
+mod shift_2d_grid;
 // endregion:   --- USE | MOD ---
 
 // region:      --- main ---

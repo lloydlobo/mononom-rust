@@ -45,6 +45,10 @@ cargo watch -x 'run --bin <project-name>'
   cargo install cargo-watch
   ```
 
+## Rust Cheat-sheet
+
+Source: <https://www.youtube.com/c/LetsGetRusty>
+
 <!-- markdownlint-enable-->
 
 <!-- # MononomRust

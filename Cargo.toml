@@ -1,14 +1,15 @@
 [workspace]
 members = [
-    "apps/leetcode/easy",
-    "apps/_audio/synthesis-wavetable",
-    "apps/rust/ownership-borrowing",
-    "apps/rust/basics",
-    "apps/bevy/render-2d",
-    "apps/bevy/greeta",
-    "apps/bevy/invaders",
-    "libs/tdd/adder",
-    "apps/guessing-game",
-    "libs/rust-lib",
+  "libs/benchmark-tests",
+  "apps/leetcode/easy",
+  "apps/_audio/synthesis-wavetable",
+  "apps/rust/ownership-borrowing",
+  "apps/rust/basics",
+  "apps/bevy/render-2d",
+  "apps/bevy/greeta",
+  "apps/bevy/invaders",
+  "libs/tdd/adder",
+  "apps/guessing-game",
+  "libs/rust-lib",
 ]
 resolver = "2" # "2" is the default resolver ! Important! wpu/Bevy needs this!
