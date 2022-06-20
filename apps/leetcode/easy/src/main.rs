@@ -1,12 +1,13 @@
 // cspell:ignore curr
 // region:      --- USE | MOD ---
 use crate::{
-    climbing_stairs::{fibo_basic, fibo_intermediate},
+    //    climbing_stairs::{fibo_basic, fibo_intermediate},
     // even_digits::find_numbers,
     graph_star::{create_input_vec, find_center},
     linked_lists::ListNode,
     nearest_valid_point::nearest_valid_point,
     random_vector::random_duplicate_vector,
+    shift_2d_grid::shift_grid,
 };
 // use linked_lists::remove_elements;
 use sums::two_sum;
@@ -17,23 +18,23 @@ pub mod linked_lists;
 pub mod nearest_valid_point;
 mod random_vector;
 mod robot_origin;
+mod shift_2d_grid;
 pub mod sums;
 mod trim_mean;
-mod shift_2d_grid;
 // endregion:   --- USE | MOD ---
 
 // region:      --- main ---
 fn main() {
-    // let head = create_list_elements();
-    // println!("remove_element: {:?}", remove_elements(head, 6));
-    // clearscreen::clear().expect("failed to clear screen");
+    let grid = vec![
+        vec![3, 8, 1, 9],
+        vec![19, 7, 2, 5],
+        vec![4, 6, 11, 10],
+        vec![12, 0, 21, 13],
+    ];
+    let k = 4;
 
-    // println!( "find_numbers: {:?}", find_numbers(vec![ 12, 10, 14, 1, 15, 20, 4000, 30, 40, 50, 60, 70, 80, 90, 100 ])); let trim_mean = trim_mean::trim_mean( vec![ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ], 1,); println!("trim_mean: {}", trim_mean); let new_vec = [ 4, 8, 4, 10, 0, 7, 1, 3, 7, 8, 8, 3, 4, 1, 6, 2, 1, 1, 8, 0, 9, 8, 0, 3, 9, 10, 3, 10, 1, 10, 7, 3, 2, 1, 4, 9, 10, 7, 6, 4, 0, 8, 5, 1, 2, 1, 6, 2, 5, 0, 7, 10, 9, 10, 3, 7, 10, 5, 8, 5, 7, 6, 7, 6, 10, 9, 5, 10, 5, 5, 7, 2, 10, 7, 7, 8, 2, 0, 1, 1, ]; let new_vec_trim_mean = trim_mean::trim_mean(new_vec.to_vec(), 5); println!("new_vec_trim_mean: {}", new_vec_trim_mean); // new_vec_trim_mean: 5.277777777777778 // assert!(new_vec_trim_mean == 5.29167);
-    // climb_stairs
-    // println!("climb_stairs: {}", climbing_stairs::climb_stairs(10));
-    // println!("climb_stairs: {}", climbing_stairs::climb_stairs(10));
-    println!("fibonacci_basic: {}", fibo_basic(93)); // this works fine!!! n near millions
-    println!("fibonacci_intermediate: {}", fibo_intermediate(93)); // returns 0 at n > 93 (prev.checked_add(curr) helps to wrap the value to 0 after the stack overflows)
+    let shift_grid_result = shift_grid(grid, k); // let head = create_list_elements(); println!("remove_element: {:?}", remove_elements(head, 6)); clearscreen::clear().expect("failed to clear screen"); climb_stairs println!("climb_stairs: {}", climbing_stairs::climb_stairs(10)); println!("climb_stairs: {}", climbing_stairs::climb_stairs(10)); println!("fibonacci_basic: {}", fibo_basic(93)); // this works fine!!! n near millions println!("fibonacci_intermediate: {}", fibo_intermediate(93)); // returns 0 at n > 93 (prev.checked_add(curr) helps to wrap the value to 0 after the stack overflows)
+    println!("shift_grid: {:?}", shift_grid_result);
 }
 
 // endregion:    --- main ---
