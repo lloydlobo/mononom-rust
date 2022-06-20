@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "apps/nlp/tokenizer",
   "libs/benchmark-tests",
   "apps/leetcode/easy",
   "apps/_audio/synthesis-wavetable",
