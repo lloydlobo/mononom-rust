@@ -4,7 +4,7 @@
 
 pub fn sort_arr<T: Ord>(arr: &mut [T]) {
     sorting::bubble_sort(arr); // this seems to be quite faster than selection_sort
-//    sorting::selection_sort(arr);
+                               //    sorting::selection_sort(arr);
 }
 
 mod sorting {
